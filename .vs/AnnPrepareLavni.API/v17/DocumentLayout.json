@@ -1,0 +1,207 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\dev\\AnnPrepareLavni.API\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\contracts\\patient\\requests\\createpatientrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\contracts\\patient\\requests\\createpatientrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\patients\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\patients\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\converters\\unitconversion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\converters\\unitconversion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\patients\\getpatientsendpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\patients\\getpatientsendpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\validation\\validationfailed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\validation\\validationfailed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\contracts\\validation\\validationcontractmappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\contracts\\validation\\validationcontractmappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\contracts\\patient\\patientcontractmappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\contracts\\patient\\patientcontractmappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\adresses\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\adresses\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\patients\\medicalcondition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\patients\\medicalcondition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|f:\\dev\\annpreparelavni.api\\annpreparelavni.api\\globalusings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AFC6703-70B3-475D-B227-EDCD35016BFC}|AnnPrepareLavni.API\\AnnPrepareLavni.API.csproj|solutionrelative:annpreparelavni.api\\globalusings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UnitConversion.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Converters\\UnitConversion.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Converters\\UnitConversion.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Converters\\UnitConversion.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Converters\\UnitConversion.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T23:06:07.159Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PatientContractMappings.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Contracts\\Patient\\PatientContractMappings.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Contracts\\Patient\\PatientContractMappings.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Contracts\\Patient\\PatientContractMappings.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Contracts\\Patient\\PatientContractMappings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACEAAAAHAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T22:47:07.548Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ValidationContractMappings.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Contracts\\Validation\\ValidationContractMappings.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Contracts\\Validation\\ValidationContractMappings.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Contracts\\Validation\\ValidationContractMappings.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Contracts\\Validation\\ValidationContractMappings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T22:43:36.659Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CreatePatientRequest.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Contracts\\Patient\\Requests\\CreatePatientRequest.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Contracts\\Patient\\Requests\\CreatePatientRequest.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Contracts\\Patient\\Requests\\CreatePatientRequest.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Contracts\\Patient\\Requests\\CreatePatientRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T22:42:38.087Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ValidationFailed.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Validation\\ValidationFailed.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Validation\\ValidationFailed.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Validation\\ValidationFailed.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Validation\\ValidationFailed.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T22:39:53.461Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GetPatientsEndpoint.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Patients\\GetPatientsEndpoint.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Patients\\GetPatientsEndpoint.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Patients\\GetPatientsEndpoint.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Patients\\GetPatientsEndpoint.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T22:28:13.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MedicalCondition.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Patients\\MedicalCondition.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Patients\\MedicalCondition.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Patients\\MedicalCondition.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Patients\\MedicalCondition.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T22:24:55.72Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Patient.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Patients\\Patient.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Patients\\Patient.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Patients\\Patient.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Patients\\Patient.cs",
+              "ViewState": "AQIAABIAAAAAAAAAAAAowAoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T22:12:43.571Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Address.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Adresses\\Address.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Adresses\\Address.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Adresses\\Address.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Adresses\\Address.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T21:57:43.071Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "GlobalUsings.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\GlobalUsings.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\GlobalUsings.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\GlobalUsings.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\GlobalUsings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T21:48:02.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Program.cs",
+              "RelativeDocumentMoniker": "AnnPrepareLavni.API\\Program.cs",
+              "ToolTip": "F:\\dev\\AnnPrepareLavni.API\\AnnPrepareLavni.API\\Program.cs",
+              "RelativeToolTip": "AnnPrepareLavni.API\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-02T21:41:51.085Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

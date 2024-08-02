@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\AnnPrepareLavni.API.props" />
+</Project>
