@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace AnnPrepareLavni.API.Validation;
+namespace AnnPrepareLavni.API.Common;
 
 public record ValidationFailed(IEnumerable<ValidationFailure> Errors)
 {

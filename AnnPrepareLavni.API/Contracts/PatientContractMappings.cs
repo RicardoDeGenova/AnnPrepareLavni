@@ -1,8 +1,6 @@
-﻿using AnnPrepareLavni.API.Adresses;
-using AnnPrepareLavni.API.Contracts.Requests;
+﻿using AnnPrepareLavni.API.Contracts.Requests;
 using AnnPrepareLavni.API.Contracts.Responses;
-using AnnPrepareLavni.API.Patients;
-using Microsoft.AspNetCore.Http.HttpResults;
+using AnnPrepareLavni.API.Domain.Entities;
 
 namespace AnnPrepareLavni.API.Contracts;
 
@@ -37,6 +35,6 @@ public static class PatientContractMappings
 
     public static PatientsResponse MapToResponse(this IEnumerable<Patient> patient) => new()
     {
-        Items = patient.Select(MapToResponse)
+        Patients = patient.Select(MapToResponse)
     };
 }

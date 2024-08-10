@@ -1,8 +1,9 @@
 ﻿using AnnPrepareLavni.API.Contracts.Responses;
 using AnnPrepareLavni.API.Contracts;
 using FastEndpoints;
+using AnnPrepareLavni.API.Endpoints.Patients;
 
-namespace AnnPrepareLavni.API.Patients;
+namespace AnnPrepareLavni.API.Features.Patients.GetPatient;
 
 public class GetPatientsEndpoint : EndpointWithoutRequest<PatientsResponse>
 {

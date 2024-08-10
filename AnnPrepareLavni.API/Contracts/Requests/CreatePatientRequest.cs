@@ -1,4 +1,4 @@
-﻿using AnnPrepareLavni.API.Patients;
+﻿using AnnPrepareLavni.API.Domain.Entities;
 
 namespace AnnPrepareLavni.API.Contracts.Requests;
 

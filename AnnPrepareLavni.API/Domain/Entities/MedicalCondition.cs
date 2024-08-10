@@ -1,4 +1,4 @@
-﻿namespace AnnPrepareLavni.API.Patients;
+﻿namespace AnnPrepareLavni.API.Domain.Entities;
 
 public class MedicalCondition
 {

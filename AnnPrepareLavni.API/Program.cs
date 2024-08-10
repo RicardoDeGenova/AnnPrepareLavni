@@ -1,7 +1,8 @@
 using FluentValidation;
 using FastEndpoints;
-using AnnPrepareLavni.API.Database;
 using AnnPrepareLavni.API.Endpoints.Patients;
+using AnnPrepareLavni.API.Infrastructure.Database;
+using AnnPrepareLavni.API.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,9 @@ builder.Services.AddSingleton<IDbConnectionFactory>(_ => new DbConnectionFactory
 builder.Services.AddSingleton(_ => new DatabaseInitializer(config["Database:ConnectionString"]!));
 
 builder.Services.AddSingleton<IPatientService, PatientService>();
+
+builder.Services.AddSingleton<IPatientRepository, PatientRepository>();
+
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Singleton);
 
 var app = builder.Build();

@@ -1,5 +1,5 @@
-﻿using AnnPrepareLavni.API.Contracts.Validation.Responses;
-using AnnPrepareLavni.API.Validation;
+﻿using AnnPrepareLavni.API.Common;
+using AnnPrepareLavni.API.Contracts.Validation.Responses;
 using FluentValidation.Results;
 
 namespace AnnPrepareLavni.API.Contracts.Validation;

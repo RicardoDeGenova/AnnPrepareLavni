@@ -1,6 +1,4 @@
-
-using AnnPrepareLavni.API.Adresses;
-using AnnPrepareLavni.API.Patients;
+using AnnPrepareLavni.API.Domain.Entities;
 
 namespace AnnPrepareLavni.API.Contracts;
 

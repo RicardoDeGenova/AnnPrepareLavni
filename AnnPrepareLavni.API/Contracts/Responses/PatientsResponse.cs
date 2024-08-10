@@ -2,5 +2,5 @@
 
 public class PatientsResponse
 {
-    public required IEnumerable<PatientResponse> Items { get; init; } = Enumerable.Empty<PatientResponse>();
+    public required IEnumerable<PatientResponse> Patients { get; init; } = Enumerable.Empty<PatientResponse>();
 }

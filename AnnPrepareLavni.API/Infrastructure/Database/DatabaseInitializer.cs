@@ -1,6 +1,6 @@
 ﻿using DbUp;
 
-namespace AnnPrepareLavni.API.Database;
+namespace AnnPrepareLavni.API.Infrastructure.Database;
 
 public class DatabaseInitializer
 {

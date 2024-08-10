@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using AnnPrepareLavni.API.Domain.Entities;
+using FluentValidation;
 
-namespace AnnPrepareLavni.API.Patients;
+namespace AnnPrepareLavni.API.Endpoints.Patients;
 
 public class PatientValidator : AbstractValidator<Patient>
 {
@@ -11,7 +12,7 @@ public class PatientValidator : AbstractValidator<Patient>
 
         RuleFor(x => x.FirstName)
                .NotEmpty();
-        
+
         RuleFor(x => x.LastName)
                .NotEmpty();
 
@@ -23,7 +24,7 @@ public class PatientValidator : AbstractValidator<Patient>
 
         RuleFor(x => x.HeightInMeters)
             .NotEmpty();
-        
+
         RuleFor(x => x.WeightInKilograms)
             .NotEmpty();
     }

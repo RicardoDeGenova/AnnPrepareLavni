@@ -1,4 +1,4 @@
-﻿namespace AnnPrepareLavni.API;
+﻿namespace AnnPrepareLavni.API.Domain.Entities;
 
 public class Exam
 {
