@@ -1,7 +1,6 @@
-﻿using AnnPrepareLavni.API.Adresses;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace AnnPrepareLavni.API.Patients;
+namespace AnnPrepareLavni.API.Domain.Entities;
 
 public enum Gender
 {
@@ -45,7 +44,7 @@ public class Patient
     public HighestEducation HighestEducation { get; set; }
     public List<MedicalCondition> MedicalConditions { get; set; } = [];
     public DateTimeOffset CreatedAt { get; init; }
-    public Address Address { get; set; } = new();
+    public Address Address { get; set; }
 
     public string FullName => $"{FirstName} {LastName}";
     public int Age => DateTime.Now.Year - DateOfBirth.Year;
