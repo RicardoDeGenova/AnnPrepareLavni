@@ -1,4 +1,4 @@
-﻿namespace AnnPrepareLavni.API.Common;
+﻿namespace AnnPrepareLavni.API.Util;
 
 public readonly struct Result<TValue, TError>
 {

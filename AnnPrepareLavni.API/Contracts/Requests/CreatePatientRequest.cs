@@ -1,4 +1,4 @@
-﻿using AnnPrepareLavni.API.Domain.Entities;
+﻿using AnnPrepareLavni.Domain.Abstract.Enums;
 
 namespace AnnPrepareLavni.API.Contracts.Requests;
 

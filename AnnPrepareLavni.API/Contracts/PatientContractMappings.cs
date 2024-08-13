@@ -1,23 +1,25 @@
 ﻿using AnnPrepareLavni.API.Contracts.Requests;
 using AnnPrepareLavni.API.Contracts.Responses;
-using AnnPrepareLavni.API.Domain.Entities;
+using AnnPrepareLavni.BusinessLogic.Builders;
+using AnnPrepareLavni.Domain.Abstract.Domain.Entities;
 
 namespace AnnPrepareLavni.API.Contracts;
 
 public static class PatientContractMappings
 {
-    public static Patient MapToPatient(this CreatePatientRequest request) => new()
+    public static IPatient MapToPatient(this CreatePatientRequest request)
     {
-        Id = Guid.NewGuid(),
-        DateOfBirth = request.DateOfBirth,
-        FirstName = request.FirstName,
-        LastName = request.LastName,
-        Gender = request.Gender,
-        HeightInMeters = request.HeightInMeters,
-        WeightInKilograms = request.WeightInKilograms,        
-    };
+        return PatientBuilder.CreateWith(
+            PatientId.New(),
+            request.FirstName,
+            request.LastName,
+            request.DateOfBirth,
+            request.Gender,
+            request.HeightInMeters,
+            request.WeightInKilograms);
+    }
 
-    public static PatientResponse MapToResponse(this Patient patient) => new()
+    public static PatientResponse MapToResponse(this IPatient patient) => new()
     {
         Id = patient.Id,
         FirstName = patient.FirstName,
@@ -33,7 +35,7 @@ public static class PatientContractMappings
         Address = patient.Address,
     };
 
-    public static PatientsResponse MapToResponse(this IEnumerable<Patient> patient) => new()
+    public static PatientsResponse MapToResponse(this IEnumerable<IPatient> patient) => new()
     {
         Patients = patient.Select(MapToResponse)
     };

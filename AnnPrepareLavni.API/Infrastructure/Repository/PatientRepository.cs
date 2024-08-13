@@ -1,5 +1,5 @@
-﻿using AnnPrepareLavni.API.Domain.Entities;
-using AnnPrepareLavni.API.Infrastructure.Database;
+﻿using AnnPrepareLavni.API.Infrastructure.Database;
+using AnnPrepareLavni.Domain.Abstract.Domain.Entities;
 using Dapper;
 
 namespace AnnPrepareLavni.API.Infrastructure.Repository;
@@ -13,7 +13,7 @@ public class PatientRepository : IPatientRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<IEnumerable<Patient>> GetAllPatientsAsync()
+    public async Task<IEnumerable<IPatient>> GetAllPatientsAsync()
     {
         var sql = @"
                 SELECT p.*, a.*, mc.*
@@ -23,9 +23,9 @@ public class PatientRepository : IPatientRepository
                 LEFT JOIN MedicalCondition mc ON mc.Id = pmc.MedicalConditionId";
 
         using var connection = _dbConnectionFactory.CreateConnection();
-        var patientDictionary = new Dictionary<Guid, Patient>();
+        var patientDictionary = new Dictionary<PatientId, IPatient>();
         
-        var patients = await connection.QueryAsync<Patient, Address, MedicalCondition, Patient>(
+        var patients = await connection.QueryAsync<IPatient, IAddress, IMedicalCondition, IPatient>(
             sql,
             (patient, address, medicalCondition) =>
             {
@@ -33,7 +33,7 @@ public class PatientRepository : IPatientRepository
                 {
                     currentPatient = patient;
                     currentPatient.Address = address;
-                    currentPatient.MedicalConditions = new List<MedicalCondition>();
+                    currentPatient.MedicalConditions = new List<IMedicalCondition>();
                     patientDictionary.Add(currentPatient.Id, currentPatient);
                 }
 
@@ -57,5 +57,5 @@ public interface IPatientRepository
     //Task<bool> UpdatePatientAsync(Patient patient);
     //Task<int> CreatePatientAsync(Patient patient);
     //Task<Patient> GetPatientByIdAsync(int id);
-    Task<IEnumerable<Patient>> GetAllPatientsAsync();
+    Task<IEnumerable<IPatient>> GetAllPatientsAsync();
 }
