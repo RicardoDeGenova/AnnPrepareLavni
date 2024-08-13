@@ -1,8 +1,10 @@
-﻿namespace AnnPrepareLavni.API.Domain.Entities;
+﻿using AnnPrepareLavni.Domain.Abstract.Domain.Entities;
 
-public class Exam
+namespace AnnPrepareLavni.Domain.Implementation.Entities;
+
+public class Exam : IExam
 {
-    public Guid Id { get; set; }
+    public ExamId Id { get; set; }
     public Guid PatientId { get; set; }
     public string General { get; set; }
     public string Pulmonary { get; set; }
@@ -11,6 +13,6 @@ public class Exam
     public string Abdominal_Genitourinary { get; set; }
     public string Extremities { get; set; }
     public string Evaluation { get; set; }
-    public Provider Provider { get; set; }
+    public IProvider Provider { get; set; }
     public DateTime ExaminedAt { get; set; }
 }

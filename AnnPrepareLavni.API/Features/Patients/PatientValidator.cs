@@ -1,9 +1,9 @@
-﻿using AnnPrepareLavni.API.Domain.Entities;
+﻿using AnnPrepareLavni.Domain.Abstract.Domain.Entities;
 using FluentValidation;
 
 namespace AnnPrepareLavni.API.Endpoints.Patients;
 
-public class PatientValidator : AbstractValidator<Patient>
+public class PatientValidator : AbstractValidator<IPatient>
 {
     public PatientValidator()
     {

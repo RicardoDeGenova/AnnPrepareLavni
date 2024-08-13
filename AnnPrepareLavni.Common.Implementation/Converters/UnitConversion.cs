@@ -1,4 +1,4 @@
-﻿namespace AnnPrepareLavni.API.Common.Converters;
+﻿namespace AnnPrepareLavni.API.Util.Converters;
 
 public static class UnitConversion
 {

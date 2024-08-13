@@ -1,27 +1,21 @@
-﻿using AnnPrepareLavni.API.Contracts;
-using AnnPrepareLavni.API.Contracts.Responses;
-using FastEndpoints;
-using Microsoft.AspNetCore.Http.HttpResults;
-using FluentValidation;
-using System.Collections.Concurrent;
-using AnnPrepareLavni.API.Domain.Entities;
-using AnnPrepareLavni.API.Common;
+﻿using FluentValidation;
 using AnnPrepareLavni.API.Infrastructure.Repository;
+using AnnPrepareLavni.Domain.Abstract.Domain.Entities;
 
 namespace AnnPrepareLavni.API.Endpoints.Patients;
 
 public class PatientService : IPatientService
 {
-    private readonly IValidator<Patient> _patientValidator;
+    private readonly IValidator<IPatient> _patientValidator;
     private readonly IPatientRepository _patientRepository;
 
-    public PatientService(IValidator<Patient> patientValidator, IPatientRepository patientRepository)
+    public PatientService(IValidator<IPatient> patientValidator, IPatientRepository patientRepository)
     {
         _patientValidator = patientValidator;
         _patientRepository = patientRepository;
     }
 
-    public async Task<IEnumerable<Patient>> GetAllAsync()
+    public async Task<IEnumerable<IPatient>> GetAllAsync()
     {
         return await _patientRepository.GetAllPatientsAsync();
     }
@@ -30,5 +24,5 @@ public class PatientService : IPatientService
 
 public interface IPatientService
 {
-    Task<IEnumerable<Patient>> GetAllAsync();
+    Task<IEnumerable<IPatient>> GetAllAsync();
 }

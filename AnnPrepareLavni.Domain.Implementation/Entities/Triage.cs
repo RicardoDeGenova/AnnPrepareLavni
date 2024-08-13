@@ -1,10 +1,11 @@
-﻿namespace AnnPrepareLavni.API.Domain.Entities;
+﻿using AnnPrepareLavni.Domain.Abstract.Domain.Entities;
 
-public class Triage
+namespace AnnPrepareLavni.Domain.Implementation.Entities;
+
+public class Triage : ITriage
 {
-    public int Id { get; set; }
-    public int PatientNumber { get; set; }
-    public Guid PatientId { get; set; }
+    public TriageId Id { get; set; }
+    public IPatient Patient { get; set; }
     public DateTime Date { get; set; }
     public string Complaint { get; set; }
     public double Temperature { get; set; }
