@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AnnPrepareLavni.Domain.Abstract\AnnPrepareLavni.Domain.Abstract.csproj" />
-    <ProjectReference Include="..\AnnPrepareLavni.Domain.Implementation\AnnPrepareLavni.Domain.Implementation.csproj" />
   </ItemGroup>
 
 </Project>

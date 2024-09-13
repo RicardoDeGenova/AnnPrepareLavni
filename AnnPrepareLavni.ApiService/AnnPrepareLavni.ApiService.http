@@ -1,0 +1,6 @@
+@AnnPrepareLavni.ApiService_HostAddress = http://localhost:5299
+
+GET {{AnnPrepareLavni.ApiService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
