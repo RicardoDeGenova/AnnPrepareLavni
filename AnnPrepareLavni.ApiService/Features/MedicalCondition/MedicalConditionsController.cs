@@ -1,5 +1,6 @@
 ﻿using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
+using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -98,13 +99,13 @@ public class MedicalConditionsController : ControllerBase
             return NotFound(new { Message = $"Medical condition with ID {id} not found." });
         }
 
-        var newMedicalCondition = MedicalConditionMapper.MapToMedicalCondition(medicalConditionRequest);
+        MedicalConditionMapper.MapToExistingMedicalCondition(medicalConditionRequest, existingMedicalCondition);
 
-        newMedicalCondition.ModifiedAt = DateTimeOffset.Now;
+        existingMedicalCondition.ModifiedAt = DateTimeOffset.Now;
 
         await _context.SaveChangesAsync();
 
-        var medicalConditionResponse = MedicalConditionMapper.MapToResponse(newMedicalCondition);
+        var medicalConditionResponse = MedicalConditionMapper.MapToResponse(existingMedicalCondition);
 
         return Ok(medicalConditionResponse);
     }

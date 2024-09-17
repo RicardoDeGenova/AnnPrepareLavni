@@ -80,8 +80,6 @@ public class PatientsController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var patient = PatientMapper.MapToPatient(patientRequest);
-
         var existingPatient = await _context.Patients
                                             .Include(p => p.Address)
                                             .Include(p => p.MedicalConditions)
@@ -92,16 +90,18 @@ public class PatientsController : ControllerBase
             return NotFound(new { Message = $"Patient with ID {id} not found." });
         }
 
-        patient.ModifiedAt = DateTimeOffset.Now;
+        PatientMapper.MapToExistingPatient(patientRequest, existingPatient);
 
-        if (patient.Address != null && patient.Address.Id == Guid.Empty)
+        existingPatient.ModifiedAt = DateTimeOffset.Now;
+
+        if (existingPatient.Address != null && existingPatient.Address.Id == Guid.Empty)
         {
-            patient.Address.Id = Guid.NewGuid();
+            existingPatient.Address.Id = Guid.NewGuid();
         }
 
         await _context.SaveChangesAsync();
 
-        var patientResponse = PatientMapper.MapToResponse(patient);
+        var patientResponse = PatientMapper.MapToResponse(existingPatient);
 
         return Ok(patientResponse);
     }
