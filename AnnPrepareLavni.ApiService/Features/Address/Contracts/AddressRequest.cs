@@ -1,15 +1,10 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AnnPrepareLavni.ApiService.Models;
+namespace AnnPrepareLavni.ApiService.Features.Address.Contracts;
 
-public class Address
+public class AddressRequest
 {
-    [Required]
-    public Guid Id { get; set; }
-
     public Guid PatientId { get; set; }
-    public Patient? Patient { get; set; }
 
     [Required(ErrorMessage = "Street is required.")]
     [StringLength(100, ErrorMessage = "Street1 cannot be longer than 100 characters.")]
@@ -34,6 +29,4 @@ public class Address
     [StringLength(50, ErrorMessage = "Country cannot be longer than 50 characters.")]
     public required string Country { get; set; }
 
-    public DateTimeOffset ModifiedAt { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
 }

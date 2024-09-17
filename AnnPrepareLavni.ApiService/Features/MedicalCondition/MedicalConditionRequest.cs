@@ -1,23 +1,13 @@
-﻿using System.ComponentModel;
+﻿using AnnPrepareLavni.ApiService.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
-namespace AnnPrepareLavni.ApiService.Models;
+namespace AnnPrepareLavni.ApiService.Features.MedicalCondition;
 
-public enum MedicalConditionType
+public class MedicalConditionRequest
 {
-    Chronic,
-    Past,
-    Current
-}
-
-public class MedicalCondition 
-{
-    [Required]
-    public Guid Id { get; set; }
-
     [Required]
     public Guid PatientId { get; set; }
-    public Patient Patient { get; set; } = null!;
 
     [Required(ErrorMessage = "Condition name is required.")]
     [StringLength(150, ErrorMessage = "Condition name cannot be longer than 150 characters.")]
@@ -30,8 +20,6 @@ public class MedicalCondition
     public MedicalConditionType ConditionType { get; set; }
 
     public DateTimeOffset StartedAt { get; set; }
-    public DateTimeOffset StoppedAt { get; set; }
 
-    public DateTimeOffset ModifiedAt { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset StoppedAt { get; set; }
 }

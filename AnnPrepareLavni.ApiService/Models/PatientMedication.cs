@@ -1,18 +1,12 @@
 ﻿using AnnPrepareLavni.ApiService.Models.Enums;
 
 namespace AnnPrepareLavni.ApiService.Models;
-public enum MedicationFrequencyType
-{
-    AtRegularIntervals,
-    OnSpecificDays,
-    AsNeeded
-}
-
 
 public class PatientMedication
 {
     public Guid PatientId { get; set; }
     public Guid MedicationId { get; set; }
+    public Patient Patient { get; set; } = null!;
     public MedicationType MedicationType { get; set; }
     public MedicationStrengthType StrengthType { get; set; }
     public double Strength { get; set; }

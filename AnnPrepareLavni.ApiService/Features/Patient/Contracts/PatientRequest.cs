@@ -1,17 +1,13 @@
 ﻿using AnnPrepareLavni.ApiService.Models.Enums;
 using AnnPrepareLavni.ApiService.Utils.Extensions;
 using System.ComponentModel.DataAnnotations;
+using AnnPrepareLavni.ApiService.Features.Address.Contracts;
+using AnnPrepareLavni.ApiService.Features.MedicalCondition;
 
-namespace AnnPrepareLavni.ApiService.Models;
+namespace AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 
-public class Patient
+public class PatientRequest
 {
-    [Required]
-    public Guid Id { get; set; }
-
-    [Range(1, int.MaxValue, ErrorMessage = "PatientNo must be a positive number.")]
-    public int PatientNo { get; set; }
-    
     [Required(ErrorMessage = "First name is required.")]
     [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
     public string FirstName { get; set; } = string.Empty;
@@ -22,7 +18,7 @@ public class Patient
 
     [Required(ErrorMessage = "Date of birth is required.")]
     [DataType(DataType.Date)]
-    [CustomValidation(typeof(Patient), nameof(ValidateDateOfBirth))]
+    [CustomValidation(typeof(PatientRequest), nameof(ValidateDateOfBirth))]
     public DateTime DateOfBirth { get; set; }
 
     [Required(ErrorMessage = "Gender is required.")]
@@ -52,14 +48,8 @@ public class Patient
     [StringLength(1000, ErrorMessage = "Profile notes cannot be longer than 1000 characters.")]
     public string? ProfileNotes { get; set; }
 
-    public Address? Address { get; set; }
-    public ICollection<MedicalCondition> MedicalConditions { get; set; }
-
-    public DateTimeOffset ModifiedAt { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
-
-    public string FullName => $"{FirstName} {LastName}";
-    public int Age => DateOfBirth.GetAge();
+    public AddressRequest? Address { get; set; }
+    public ICollection<MedicalConditionRequest> MedicalConditions { get; set; }
 
     public static ValidationResult ValidateDateOfBirth(DateTime dateOfBirth, ValidationContext context)
     {
