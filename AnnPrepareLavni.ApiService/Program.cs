@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("AnnPrepareLavniDb"));
+    options.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
