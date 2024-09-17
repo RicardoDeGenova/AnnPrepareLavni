@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient;
 
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class PatientsController : ControllerBase
 {
@@ -15,7 +15,7 @@ public class PatientsController : ControllerBase
     {
         this._context = context;
     }
-
+    
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PatientResponse>>> GetPatients()
     {

@@ -2,7 +2,7 @@
 using AnnPrepareLavni.ApiService.Utils.Extensions;
 using System.ComponentModel.DataAnnotations;
 using AnnPrepareLavni.ApiService.Features.Address.Contracts;
-using AnnPrepareLavni.ApiService.Features.MedicalCondition;
+using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 

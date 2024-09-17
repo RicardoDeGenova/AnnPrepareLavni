@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace AnnPrepareLavni.ApiService.Features.MedicalCondition;
+namespace AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
 
 public class MedicalConditionRequest
 {

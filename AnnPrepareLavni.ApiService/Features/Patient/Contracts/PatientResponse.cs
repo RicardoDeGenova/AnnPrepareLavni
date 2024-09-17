@@ -1,7 +1,7 @@
 ﻿using AnnPrepareLavni.ApiService.Models.Enums;
 using AnnPrepareLavni.ApiService.Models;
 using AnnPrepareLavni.ApiService.Features.Address.Contracts;
-using AnnPrepareLavni.ApiService.Features.MedicalCondition;
+using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 

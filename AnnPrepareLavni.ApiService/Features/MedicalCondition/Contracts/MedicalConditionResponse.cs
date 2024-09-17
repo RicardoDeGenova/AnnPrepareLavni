@@ -1,6 +1,6 @@
 ﻿using AnnPrepareLavni.ApiService.Models;
 
-namespace AnnPrepareLavni.ApiService.Features.MedicalCondition;
+namespace AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
 
 public class MedicalConditionResponse
 {
