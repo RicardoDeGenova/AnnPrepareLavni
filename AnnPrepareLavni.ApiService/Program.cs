@@ -1,3 +1,4 @@
+using AnnPrepareLavni.ApiService;
 using AnnPrepareLavni.ApiService.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+app.UseMiddleware<GlobalRoutePrefixMiddleware>("/api/v1"); 
+app.UsePathBase(new PathString("/api/v1"));
 
 app.MapDefaultEndpoints();
 

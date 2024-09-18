@@ -1,12 +1,11 @@
 ﻿using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
-using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnnPrepareLavni.ApiService.Features.MedicalCondition;
 
-[Route("api/v1/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class MedicalConditionsController : ControllerBase
 {

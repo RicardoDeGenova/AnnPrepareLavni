@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient;
 
-[Route("api/v1/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class PatientsController : ControllerBase
 {
