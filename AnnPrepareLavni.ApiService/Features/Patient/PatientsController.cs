@@ -14,9 +14,9 @@ namespace AnnPrepareLavni.ApiService.Features.Patient;
 public class PatientsController : ControllerBase
 {
     private readonly IValidator<PatientRequest> _validator;
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public PatientsController(IValidator<PatientRequest> validator, AppDbContext context)
+    public PatientsController(IValidator<PatientRequest> validator, ApplicationDbContext context)
     {
         this._validator = validator;
         this._context = context;

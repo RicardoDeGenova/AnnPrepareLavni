@@ -14,9 +14,9 @@ namespace AnnPrepareLavni.ApiService.Features.MedicalCondition;
 public class MedicalConditionsController : ControllerBase
 {
     private readonly IValidator<MedicalConditionRequest> _validator;
-    private readonly AppDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public MedicalConditionsController(IValidator<MedicalConditionRequest> validator, AppDbContext context)
+    public MedicalConditionsController(IValidator<MedicalConditionRequest> validator, ApplicationDbContext context)
     {
         _validator = validator;
         _context = context;

@@ -54,6 +54,7 @@ public class Patient
 
     public Address? Address { get; set; }
     public ICollection<MedicalCondition>? MedicalConditions { get; set; }
+    public ICollection<Medication>? Medications { get; set; }
 
     public DateTimeOffset ModifiedAt { get; set; }
     public DateTimeOffset CreatedAt { get; set; }

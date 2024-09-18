@@ -12,17 +12,17 @@ namespace AnnPrepareLavni.Tests;
 [TestClass]
 public class PatientsControllerTests
 {
-    private AppDbContext _context;
+    private ApplicationDbContext _context;
     private PatientsController _controller;
 
     [TestInitialize]
     public void TestInitialize()
     {
-        var options = new DbContextOptionsBuilder<AppDbContext>()
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
-        _context = new AppDbContext(options);
+        _context = new ApplicationDbContext(options);
         _controller = new PatientsController(new PatientRequestValidator(), _context);
 
         SeedTestData();

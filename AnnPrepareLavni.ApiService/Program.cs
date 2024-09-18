@@ -3,16 +3,14 @@ using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.Address.Contracts;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
 using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
-using AnnPrepareLavni.ApiService.Models;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase")));
 
 builder.Services.AddControllers();
