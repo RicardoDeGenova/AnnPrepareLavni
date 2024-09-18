@@ -1,5 +1,6 @@
 ﻿using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
+using AnnPrepareLavni.ApiService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,13 +25,13 @@ public class PatientsController : ControllerBase
                              .Include(p => p.MedicalConditions)
                              .ToListAsync();
 
-        var patientResponse = PatientMapper.MapToResponseList(patients);
+        var patientResponseList = PatientMapper.MapToResponseList(patients);
 
-        return Ok(patientResponse);
+        return Ok(patientResponseList);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Models.Patient>> GetPatient(Guid id)
+    public async Task<ActionResult<PatientResponse>> GetPatient(Guid id)
     {
         var patient = await _context.Patients
                                     .Include(p => p.Address)
@@ -42,7 +43,9 @@ public class PatientsController : ControllerBase
             return NotFound();
         }
 
-        return Ok(patient);
+        var patientResponse = PatientMapper.MapToResponse(patient);
+
+        return Ok(patientResponse);
     }
 
     [HttpPost]
@@ -61,6 +64,7 @@ public class PatientsController : ControllerBase
         if (patient.Address != null)
         {
             patient.Address.Id = Guid.NewGuid();
+            _context.Addresses.Add(patient.Address);
         }
 
         _context.Patients.Add(patient);
@@ -90,6 +94,20 @@ public class PatientsController : ControllerBase
             return NotFound(new { Message = $"Patient with ID {id} not found." });
         }
 
+        if (existingPatient.Address is null && patientRequest.Address is not null)
+        {
+            existingPatient.Address = new Models.Address()
+            {
+                Id = Guid.NewGuid(),
+                Street1 = patientRequest.Address.Street1,
+                Street2 = patientRequest.Address.Street2 ?? string.Empty,
+                City = patientRequest.Address.City,
+                State = patientRequest.Address.State,
+                PostalCode = patientRequest.Address.PostalCode,
+                Country = patientRequest.Address.Country
+            };
+        }
+
         PatientMapper.MapToExistingPatient(patientRequest, existingPatient);
 
         existingPatient.ModifiedAt = DateTimeOffset.Now;
@@ -97,6 +115,8 @@ public class PatientsController : ControllerBase
         if (existingPatient.Address != null && existingPatient.Address.Id == Guid.Empty)
         {
             existingPatient.Address.Id = Guid.NewGuid();
+            existingPatient.Address.PatientId = existingPatient.Id;
+            _context.Addresses.Add(existingPatient.Address);
         }
 
         await _context.SaveChangesAsync();

@@ -11,7 +11,7 @@ public class AddressRequest
     public required string Street1 { get; set; }
 
     [StringLength(100, ErrorMessage = "Street2 cannot be longer than 100 characters.")]
-    public string Street2 { get; set; } = string.Empty;
+    public string? Street2 { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "City is required.")]
     [StringLength(50, ErrorMessage = "City cannot be longer than 50 characters.")]

@@ -49,7 +49,7 @@ public class PatientRequest
     public string? ProfileNotes { get; set; }
 
     public AddressRequest? Address { get; set; }
-    public ICollection<MedicalConditionRequest> MedicalConditions { get; set; }
+    public ICollection<MedicalConditionRequest>? MedicalConditions { get; set; }
 
     public static ValidationResult ValidateDateOfBirth(DateTime dateOfBirth, ValidationContext context)
     {

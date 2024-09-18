@@ -53,7 +53,7 @@ public class Patient
     public string? ProfileNotes { get; set; }
 
     public Address? Address { get; set; }
-    public ICollection<MedicalCondition> MedicalConditions { get; set; }
+    public ICollection<MedicalCondition>? MedicalConditions { get; set; }
 
     public DateTimeOffset ModifiedAt { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
