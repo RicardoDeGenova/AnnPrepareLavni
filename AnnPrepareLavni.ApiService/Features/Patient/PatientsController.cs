@@ -1,19 +1,24 @@
 ﻿using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 using AnnPrepareLavni.ApiService.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient;
 
-[Route("[controller]")]
 [ApiController]
+[Route("[controller]")]
 public class PatientsController : ControllerBase
 {
+    private readonly IValidator<PatientRequest> _validator;
     private readonly AppDbContext _context;
 
-    public PatientsController(AppDbContext context)
+    public PatientsController(IValidator<PatientRequest> validator, AppDbContext context)
     {
+        this._validator = validator;
         this._context = context;
     }
     
@@ -51,10 +56,19 @@ public class PatientsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<PatientResponse>> CreatePatient([FromBody] PatientRequest patientRequest)
     {
-        if (!ModelState.IsValid)
+        if (patientRequest is null)
         {
+            return BadRequest(new { Message = "PatientRequest cannot be null" });
+        }
+
+        ValidationResult result = await _validator.ValidateAsync(patientRequest);
+
+        if (!result.IsValid)
+        {
+            result.AddToModelState(ModelState);
             return BadRequest(ModelState);
         }
+
         var patient = PatientMapper.MapToPatient(patientRequest);
 
         patient.Id = Guid.NewGuid();
@@ -64,6 +78,7 @@ public class PatientsController : ControllerBase
         if (patient.Address != null)
         {
             patient.Address.Id = Guid.NewGuid();
+            patient.Address.PatientId = patient.Id;
             _context.Addresses.Add(patient.Address);
         }
 
@@ -79,8 +94,16 @@ public class PatientsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<PatientResponse>> UpdatePatient(Guid id, [FromBody] PatientRequest patientRequest)
     {
-        if (!ModelState.IsValid)
+        if (patientRequest is null)
         {
+            return BadRequest(new { Message = "PatientRequest cannot be null" });
+        }
+
+        ValidationResult result = await _validator.ValidateAsync(patientRequest);
+
+        if (!result.IsValid)
+        {
+            result.AddToModelState(this.ModelState);
             return BadRequest(ModelState);
         }
 

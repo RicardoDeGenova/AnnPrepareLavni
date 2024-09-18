@@ -21,7 +21,7 @@ public class MedicalConditionsControllerTests
             .Options;
 
         _context = new AppDbContext(options);
-        _controller = new MedicalConditionsController(_context);
+        _controller = new MedicalConditionsController(new MedicalConditionRequestValidator(), _context);
 
         SeedTestData();
     }

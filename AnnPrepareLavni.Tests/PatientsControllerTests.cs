@@ -23,10 +23,12 @@ public class PatientsControllerTests
             .Options;
 
         _context = new AppDbContext(options);
-        _controller = new PatientsController(_context);
+        _controller = new PatientsController(new PatientRequestValidator(), _context);
 
         SeedTestData();
     }
+
+    #region HAPPY PATH
 
     [TestMethod]
     public async Task GetPatients_ShouldReturnAllPatients()
@@ -50,14 +52,6 @@ public class PatientsControllerTests
 
         var patient = okResult.Value as PatientResponse;
         Assert.AreEqual("John", patient?.FirstName);
-    }
-
-    [TestMethod]
-    public async Task GetPatient_ShouldReturnNotFound_ForNonExistingPatient()
-    {
-        var result = await _controller.GetPatient(Guid.NewGuid());
-        var notFoundResult = result.Result as NotFoundResult;
-        Assert.IsNotNull(notFoundResult);
     }
 
     [TestMethod]
@@ -98,16 +92,20 @@ public class PatientsControllerTests
             FirstName = "John",
             LastName = "Doe Updated",
             DateOfBirth = existingPatient.DateOfBirth,
-            Gender = Gender.Male,
-            Address = new AddressRequest
+            Gender = Gender.Male,    
+        };
+
+        if (existingPatient.Address is not null)
+        {
+            updatedRequest.Address = new AddressRequest
             {
                 Street1 = existingPatient.Address.Street1,
                 City = existingPatient.Address.City,
                 State = existingPatient.Address.State,
                 PostalCode = existingPatient.Address.PostalCode,
                 Country = existingPatient.Address.Country
-            }
-        };
+            };
+        }
 
         var result = await _controller.UpdatePatient(existingPatient.Id, updatedRequest);
         var okResult = result.Result as OkObjectResult;
@@ -131,6 +129,122 @@ public class PatientsControllerTests
         Assert.IsNotNull(okResult);
         Assert.AreEqual(1, _context.Patients.Count());
     }
+
+    #endregion
+
+    #region SAD PATH
+
+    [TestMethod]
+    public async Task GetPatient_ShouldReturnNotFound_ForNonExistingPatient()
+    {
+        var result = await _controller.GetPatient(Guid.NewGuid());
+        var notFoundResult = result.Result as NotFoundResult;
+        Assert.IsNotNull(notFoundResult);
+    }
+
+    [TestMethod]
+    public async Task CreatePatient_ShouldReturnBadRequest_WhenRequiredFieldsAreMissing()
+    {
+        var invalidPatientRequest = new PatientRequest
+        {
+            Gender = Gender.Male,
+            Address = new AddressRequest
+            {
+                Street1 = "456 Main St",
+                City = "Springfield",
+                State = "IL",
+                PostalCode = "62704",
+                Country = "USA"
+            }
+        };
+
+        var result = await _controller.CreatePatient(invalidPatientRequest);
+        var badRequestResult = result.Result as BadRequestObjectResult;
+        Assert.IsNotNull(badRequestResult);
+
+        var modelState = badRequestResult.Value as SerializableError;
+        Assert.IsTrue(modelState?.ContainsKey(nameof(PatientRequest.FirstName)));
+        Assert.IsTrue(modelState?.ContainsKey(nameof(PatientRequest.LastName)));
+        Assert.IsTrue(modelState?.ContainsKey(nameof(PatientRequest.DateOfBirth)));
+
+        Assert.IsFalse(modelState?.ContainsKey(nameof(PatientRequest.Gender)));
+    }
+
+    [TestMethod]
+    public async Task CreatePatient_ShouldReturnBadRequest_WhenRequiredFieldsAreMissing2()
+    {
+        var invalidPatientRequest = new PatientRequest
+        {
+            FirstName = "Alice",
+            LastName = "Smith",
+            DateOfBirth = new DateTime(1990, 1, 1),
+        };
+
+        var result = await _controller.CreatePatient(invalidPatientRequest);
+        var badRequestResult = result.Result as BadRequestObjectResult;
+        Assert.IsNotNull(badRequestResult);
+
+        var modelState = badRequestResult.Value as SerializableError;
+        Assert.IsTrue(modelState?.ContainsKey(nameof(PatientRequest.Gender)));
+
+        Assert.IsFalse(modelState?.ContainsKey(nameof(PatientRequest.FirstName)));
+        Assert.IsFalse(modelState?.ContainsKey(nameof(PatientRequest.LastName)));
+        Assert.IsFalse(modelState?.ContainsKey(nameof(PatientRequest.DateOfBirth)));
+    }
+
+    [TestMethod]
+    public async Task CreatePatient_ShouldReturnBadRequest_WhenFieldsAreInvalid()
+    {
+        var invalidPatientRequest = new PatientRequest
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            DateOfBirth = DateTime.Now.AddYears(1),
+            Gender = (Gender)99,
+        };
+
+        var result = await _controller.CreatePatient(invalidPatientRequest);
+        var badRequestResult = result.Result as BadRequestObjectResult;
+        Assert.IsNotNull(badRequestResult);
+
+        var modelState = badRequestResult.Value as SerializableError;
+        Assert.IsTrue(modelState?.ContainsKey(nameof(PatientRequest.DateOfBirth)));
+        Assert.IsTrue(modelState?.ContainsKey(nameof(PatientRequest.Gender)));
+    }
+
+    [TestMethod]
+    public async Task CreatePatient_ShouldReturnBadRequest_WhenInputsExceedMaxLength()
+    {
+        var invalidPatientRequest = new PatientRequest
+        {
+            FirstName = new string('A', 51),  // 51 characters, exceeding limit
+            LastName = new string('B', 101),  // 101 characters, exceeding limit
+            DateOfBirth = new DateTime(1990, 1, 1),
+            Gender = Gender.Male
+        };
+
+        var result = await _controller.CreatePatient(invalidPatientRequest);
+        var badRequestResult = result.Result as BadRequestObjectResult;
+        Assert.IsNotNull(badRequestResult);
+
+        var modelState = badRequestResult.Value as SerializableError;
+        Assert.IsTrue(modelState?.ContainsKey(nameof(PatientRequest.FirstName)));
+        Assert.IsTrue(modelState?.ContainsKey(nameof(PatientRequest.LastName)));
+    }
+
+    [TestMethod]
+    public async Task CreatePatient_ShouldReturnBadRequest_WhenPayloadIsEmpty()
+    {
+        var result = await _controller.CreatePatient(null);
+        var badRequestResult = result.Result as BadRequestObjectResult;
+
+        Assert.IsNotNull(badRequestResult);
+    }
+
+
+    #endregion
+
+    #region SEED
 
     private void SeedTestData()
     {
@@ -179,4 +293,6 @@ public class PatientsControllerTests
         _context.Patients.AddRange(patients);
         _context.SaveChanges();
     }
+
+    #endregion
 }

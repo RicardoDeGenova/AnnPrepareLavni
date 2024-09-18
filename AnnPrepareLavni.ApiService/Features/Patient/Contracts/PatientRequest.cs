@@ -3,60 +3,25 @@ using AnnPrepareLavni.ApiService.Utils.Extensions;
 using System.ComponentModel.DataAnnotations;
 using AnnPrepareLavni.ApiService.Features.Address.Contracts;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 
 public class PatientRequest
 {
-    [Required(ErrorMessage = "First name is required.")]
-    [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
-    public string FirstName { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Last name is required.")]
-    [StringLength(100, ErrorMessage = "Last name cannot be longer than 50 characters.")]
-    public string LastName { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Date of birth is required.")]
-    [DataType(DataType.Date)]
-    [CustomValidation(typeof(PatientRequest), nameof(ValidateDateOfBirth))]
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
-
-    [Required(ErrorMessage = "Gender is required.")]
     public Gender Gender { get; set; }
-
-    [Range(0.3, 2.4, ErrorMessage = "Height should be between 0.3 and 2.4 meters.")]
-    public float HeightInMeters { get; set; }
-
-    [Range(1.5, 500, ErrorMessage = "Weight should be between 1.5 and 500 kilograms.")]
-    public float WeightInKilograms { get; set; }
-
-    [Range(1, 100, ErrorMessage = "Family size must be between 1 and 100.")]
-    public int FamilySize { get; set; }
-
-    [Required(ErrorMessage = "Highest education is required.")]
-    public HighestEducation HighestEducation { get; set; }
-
-    [StringLength(1000, ErrorMessage = "Surgical procedures notes cannot be longer than 1000 characters.")]
+    public float? HeightInMeters { get; set; }
+    public float? WeightInKilograms { get; set; }
+    public int? FamilySize { get; set; }
+    public HighestEducation? HighestEducation { get; set; }
     public string? SurgicalProceduresNotes { get; set; }
-
-    [StringLength(1000, ErrorMessage = "Family history notes cannot be longer than 1000 characters.")]
     public string? FamilyHistoryNotes { get; set; }
-
-    [StringLength(1000, ErrorMessage = "Allergies notes cannot be longer than 1000 characters.")]
     public string? AllergiesNotes { get; set; }
-
-    [StringLength(1000, ErrorMessage = "Profile notes cannot be longer than 1000 characters.")]
     public string? ProfileNotes { get; set; }
 
     public AddressRequest? Address { get; set; }
     public ICollection<MedicalConditionRequest>? MedicalConditions { get; set; }
-
-    public static ValidationResult ValidateDateOfBirth(DateTime dateOfBirth, ValidationContext context)
-    {
-        var age = dateOfBirth.GetAge();
-
-        return (age < 0 || age > 120)
-            ? new ValidationResult("Invalid date of birth. Age must be between 0 and 120.")
-            : ValidationResult.Success!;
-    }
 }

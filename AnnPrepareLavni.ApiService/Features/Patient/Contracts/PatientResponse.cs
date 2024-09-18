@@ -2,12 +2,14 @@
 using AnnPrepareLavni.ApiService.Models;
 using AnnPrepareLavni.ApiService.Features.Address.Contracts;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
+using System.ComponentModel.DataAnnotations;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 
 public class PatientResponse
 {
     public int PatientNo { get; set; }
+
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; }

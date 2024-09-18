@@ -1,5 +1,9 @@
 ﻿using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
+using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +13,12 @@ namespace AnnPrepareLavni.ApiService.Features.MedicalCondition;
 [ApiController]
 public class MedicalConditionsController : ControllerBase
 {
+    private readonly IValidator<MedicalConditionRequest> _validator;
     private readonly AppDbContext _context;
 
-    public MedicalConditionsController(AppDbContext context)
+    public MedicalConditionsController(IValidator<MedicalConditionRequest> validator, AppDbContext context)
     {
+        _validator = validator;
         _context = context;
     }
 
@@ -54,8 +60,16 @@ public class MedicalConditionsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<MedicalConditionResponse>> CreateMedicalCondition([FromBody] MedicalConditionRequest medicalConditionRequest)
     {
-        if (!ModelState.IsValid)
+        if (medicalConditionRequest is null)
         {
+            return BadRequest(new { Message = "MedicalConditionRequest cannot be null" });
+        }
+
+        ValidationResult result = await _validator.ValidateAsync(medicalConditionRequest);
+
+        if (!result.IsValid)
+        {
+            result.AddToModelState(ModelState);
             return BadRequest(ModelState);
         }
 
@@ -84,8 +98,16 @@ public class MedicalConditionsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<MedicalConditionResponse>> UpdateMedicalCondition(Guid id, [FromBody] MedicalConditionRequest medicalConditionRequest)
     {
-        if (!ModelState.IsValid)
+        if (medicalConditionRequest is null)
         {
+            return BadRequest(new { Message = "MedicalConditionRequest cannot be null" });
+        }
+
+        ValidationResult result = await _validator.ValidateAsync(medicalConditionRequest);
+
+        if (!result.IsValid)
+        {
+            result.AddToModelState(ModelState);
             return BadRequest(ModelState);
         }
 

@@ -1,5 +1,11 @@
 using AnnPrepareLavni.ApiService;
 using AnnPrepareLavni.ApiService.Data;
+using AnnPrepareLavni.ApiService.Features.Address.Contracts;
+using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
+using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
+using AnnPrepareLavni.ApiService.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +25,10 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod()
                .AllowAnyHeader());
 });
+
+builder.Services.AddValidatorsFromAssemblyContaining<PatientRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<AddressRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<MedicalConditionRequestValidator>();
 
 var app = builder.Build();
 app.UseMiddleware<GlobalRoutePrefixMiddleware>("/api/v1"); 
