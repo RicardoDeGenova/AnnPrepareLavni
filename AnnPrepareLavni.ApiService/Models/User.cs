@@ -4,29 +4,30 @@ using AnnPrepareLavni.ApiService.Models.Enums;
 
 namespace AnnPrepareLavni.ApiService.Models;
 
-public enum Role
+public enum UserRole
 {
-    Admin,
-    Operator
-}
-
-public enum Occupation
-{
-    Attendant,
+    Administrator,
+    Doctor,
     Nurse,
-    Doctor
+    Receptionist,
+    Pharmacist,
+    LabTechnician
 }
 
 public class User 
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public string UserName { get; set; }
-    public Occupation Occupation { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string PasswordHash { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public Language Language { get; set; }
-    public Role Role { get; set; }
+    public UserRole Role { get; set; }
+
+    public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
+    public ICollection<Triage> Triages { get; set; } = new List<Triage>();
+    public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+
     public DateTimeOffset ModifiedAt { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
 }

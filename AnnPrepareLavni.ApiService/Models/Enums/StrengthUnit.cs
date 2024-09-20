@@ -1,8 +1,8 @@
 ﻿namespace AnnPrepareLavni.ApiService.Models.Enums;
 
-public enum MedicationStrengthType
+public enum StrengthUnit
 {
-    mg,
+    mg = 1,
     mcg,
     g,
     mL,

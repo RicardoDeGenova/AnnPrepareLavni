@@ -1,11 +1,9 @@
-﻿using AnnPrepareLavni.ApiService.Data;
+﻿using AnnPrepareLavni.ApiService.Features.Address.Contracts;
 using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
-using AnnPrepareLavni.ApiService.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient;
 
@@ -14,42 +12,57 @@ namespace AnnPrepareLavni.ApiService.Features.Patient;
 public class PatientsController : ControllerBase
 {
     private readonly IValidator<PatientRequest> _validator;
-    private readonly ApplicationDbContext _context;
+    private readonly IPatientService _patientService;
 
-    public PatientsController(IValidator<PatientRequest> validator, ApplicationDbContext context)
+    public PatientsController(
+        IValidator<PatientRequest> validator, 
+        IPatientService patientService)
     {
-        this._validator = validator;
-        this._context = context;
+        _validator = validator;
+        _patientService = patientService;
     }
     
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PatientResponse>>> GetPatients()
     {
-        var patients = await _context.Patients
-                             .Include(p => p.Address)
-                             .Include(p => p.MedicalConditions)
-                             .ToListAsync();
-
-        var patientResponseList = PatientMapper.MapToResponseList(patients);
-
+        var patients = await _patientService.GetAllAsync();
+        var patientResponseList = patients.Select(PatientMapper.ToResponse);
         return Ok(patientResponseList);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<PatientResponse>> GetPatient(Guid id)
     {
-        var patient = await _context.Patients
-                                    .Include(p => p.Address)
-                                    .Include(p => p.MedicalConditions)
-                                    .FirstOrDefaultAsync(p => p.Id == id);
+        if (id == Guid.Empty)
+        {
+            return BadRequest("Invalid patient ID.");
+        }
 
+        var patient = await _patientService.GetByIdAsync(id);
         if (patient == null)
         {
             return NotFound();
         }
 
-        var patientResponse = PatientMapper.MapToResponse(patient);
+        var patientResponse = PatientMapper.ToResponse(patient);
+        return Ok(patientResponse);
+    }
 
+    [HttpGet("byPatientNo/{patientNo}")]
+    public async Task<ActionResult<PatientResponse>> GetPatient(int patientNo)
+    {
+        if (patientNo == 0)
+        {
+            return BadRequest("patientNo cannot be 0.");
+        }
+        
+        var patient = await _patientService.GetByPatientNo(patientNo);
+        if (patient == null)
+        {
+            return NotFound();
+        }
+
+        var patientResponse = PatientMapper.ToResponse(patient);
         return Ok(patientResponse);
     }
 
@@ -61,32 +74,25 @@ public class PatientsController : ControllerBase
             return BadRequest(new { Message = "PatientRequest cannot be null" });
         }
 
-        ValidationResult result = await _validator.ValidateAsync(patientRequest);
-
-        if (!result.IsValid)
+        ValidationResult validationResult = await _validator.ValidateAsync(patientRequest);
+        if (!validationResult.IsValid)
         {
-            result.AddToModelState(ModelState);
+            validationResult.AddToModelState(ModelState);
             return BadRequest(ModelState);
         }
 
-        var patient = PatientMapper.MapToPatient(patientRequest);
+        var patient = PatientMapper.ToPatient(patientRequest);
 
-        patient.Id = Guid.NewGuid();
-        patient.CreatedAt = DateTimeOffset.Now;
-        patient.ModifiedAt = DateTimeOffset.Now;
-
-        if (patient.Address != null)
+        try
         {
-            patient.Address.Id = Guid.NewGuid();
-            patient.Address.PatientId = patient.Id;
-            _context.Addresses.Add(patient.Address);
+            await _patientService.CreateAsync(patient);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the patient.");
         }
 
-        _context.Patients.Add(patient);
-
-        await _context.SaveChangesAsync();
-
-        var patientResponse = PatientMapper.MapToResponse(patient);
+        var patientResponse = PatientMapper.ToResponse(patient);
 
         return CreatedAtAction(nameof(GetPatient), new { id = patient.Id }, patientResponse);
     }
@@ -96,22 +102,22 @@ public class PatientsController : ControllerBase
     {
         if (patientRequest is null)
         {
-            return BadRequest(new { Message = "PatientRequest cannot be null" });
+            return BadRequest("PatientRequest cannot be null");
         }
 
-        ValidationResult result = await _validator.ValidateAsync(patientRequest);
-
-        if (!result.IsValid)
+        if (id == Guid.Empty)
         {
-            result.AddToModelState(this.ModelState);
+            return BadRequest("Invalid patient ID.");
+        }
+
+        ValidationResult validationResult = await _validator.ValidateAsync(patientRequest);
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState);
             return BadRequest(ModelState);
         }
 
-        var existingPatient = await _context.Patients
-                                            .Include(p => p.Address)
-                                            .Include(p => p.MedicalConditions)
-                                            .FirstOrDefaultAsync(p => p.Id == id);
-
+        var existingPatient = await _patientService.GetByIdAsync(id);
         if (existingPatient == null)
         {
             return NotFound(new { Message = $"Patient with ID {id} not found." });
@@ -119,32 +125,22 @@ public class PatientsController : ControllerBase
 
         if (existingPatient.Address is null && patientRequest.Address is not null)
         {
-            existingPatient.Address = new Models.Address()
-            {
-                Id = Guid.NewGuid(),
-                Street1 = patientRequest.Address.Street1,
-                Street2 = patientRequest.Address.Street2 ?? string.Empty,
-                City = patientRequest.Address.City,
-                State = patientRequest.Address.State,
-                PostalCode = patientRequest.Address.PostalCode,
-                Country = patientRequest.Address.Country
-            };
+            var address = AddressMapper.ToAddress(patientRequest.Address);
+            await _patientService.CreateNewAddressAsync(address, id);
         }
 
         PatientMapper.MapToExistingPatient(patientRequest, existingPatient);
 
-        existingPatient.ModifiedAt = DateTimeOffset.Now;
-
-        if (existingPatient.Address != null && existingPatient.Address.Id == Guid.Empty)
+        try
         {
-            existingPatient.Address.Id = Guid.NewGuid();
-            existingPatient.Address.PatientId = existingPatient.Id;
-            _context.Addresses.Add(existingPatient.Address);
+            await _patientService.UpdateAsync(existingPatient);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the patient.");
         }
 
-        await _context.SaveChangesAsync();
-
-        var patientResponse = PatientMapper.MapToResponse(existingPatient);
+        var patientResponse = PatientMapper.ToResponse(existingPatient);
 
         return Ok(patientResponse);
     }
@@ -152,15 +148,26 @@ public class PatientsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePatient(Guid id)
     {
-        var patient = await _context.Patients.FindAsync(id);
-        if (patient == null)
+        if (id == Guid.Empty)
+        {
+            return BadRequest("Invalid patient ID.");
+        }
+
+        var existingPatient = await _patientService.GetByIdAsync(id);
+        if (existingPatient == null)
         {
             return NotFound();
         }
 
-        _context.Patients.Remove(patient);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _patientService.DeleteAsync(id);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the patient.");
+        }
 
-        return Ok(new { Message = "Patient deleted successfully." });
+        return Ok("Patient deleted successfully.");
     }
 }

@@ -1,60 +1,63 @@
-﻿using AnnPrepareLavni.ApiService.Data;
-using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
-using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
+﻿using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AnnPrepareLavni.ApiService.Features.MedicalCondition;
 
-[Route("[controller]")]
 [ApiController]
+[Route("[controller]")]
 public class MedicalConditionsController : ControllerBase
 {
     private readonly IValidator<MedicalConditionRequest> _validator;
-    private readonly ApplicationDbContext _context;
+    private readonly IMedicalConditionService _medicalConditionService;
 
-    public MedicalConditionsController(IValidator<MedicalConditionRequest> validator, ApplicationDbContext context)
+    public MedicalConditionsController(
+        IValidator<MedicalConditionRequest> validator,
+        IMedicalConditionService medicalConditionService)
     {
         _validator = validator;
-        _context = context;
+        _medicalConditionService = medicalConditionService;
     }
 
-    [HttpGet("patient/{patientId}")]
-    public async Task<ActionResult<IEnumerable<MedicalConditionResponse>>> GetMedicalConditionsByPatient(Guid patientId)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<MedicalConditionResponse>>> GetMedicalConditions()
     {
-        var patient = await _context.Patients
-                                    .Include(p => p.MedicalConditions)
-                                    .FirstOrDefaultAsync(p => p.Id == patientId);
-
-        if (patient == null)
-        {
-            return NotFound(new { Message = $"Patient with ID {patientId} not found." });
-        }
-
-        var medicalConditions = patient.MedicalConditions;
-        var medicalConditionResponses = MedicalConditionMapper.MapToResponseList(medicalConditions);
-
-        return Ok(medicalConditionResponses);
+        var medicalConditions = await _medicalConditionService.GetAllAsync();
+        var medicalConditionResponseList = medicalConditions.Select(MedicalConditionMapper.ToResponse);
+        return Ok(medicalConditionResponseList);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<MedicalConditionResponse>> GetMedicalCondition(Guid id)
     {
-        var medicalCondition = await _context.MedicalConditions
-                                             .Include(mc => mc.Patient)
-                                             .FirstOrDefaultAsync(mc => mc.Id == id);
-
-        if (medicalCondition == null)
+        if (id == Guid.Empty)
         {
-            return NotFound(new { Message = $"Medical condition with ID {id} not found." });
+            return BadRequest("Invalid medical condition ID.");
         }
 
-        var medicalConditionResponse = MedicalConditionMapper.MapToResponse(medicalCondition);
+        var medicalCondition = await _medicalConditionService.GetByIdAsync(id);
+        if (medicalCondition == null)
+        {
+            return NotFound();
+        }
 
+        var medicalConditionResponse = MedicalConditionMapper.ToResponse(medicalCondition);
         return Ok(medicalConditionResponse);
+    }
+
+    [HttpGet("byPatient/{patientId}")]
+    public async Task<ActionResult<IEnumerable<MedicalConditionResponse>>> GetMedicalConditionsByPatientId(Guid patientId)
+    {
+        if (patientId == Guid.Empty)
+        {
+            return BadRequest("Invalid patient ID.");
+        }
+
+        var medicalConditions = await _medicalConditionService.GetByPatientIdAsync(patientId);
+        var medicalConditionResponseList = medicalConditions.Select(MedicalConditionMapper.ToResponse);
+        return Ok(medicalConditionResponseList);
     }
 
     [HttpPost]
@@ -65,32 +68,25 @@ public class MedicalConditionsController : ControllerBase
             return BadRequest(new { Message = "MedicalConditionRequest cannot be null" });
         }
 
-        ValidationResult result = await _validator.ValidateAsync(medicalConditionRequest);
-
-        if (!result.IsValid)
+        ValidationResult validationResult = await _validator.ValidateAsync(medicalConditionRequest);
+        if (!validationResult.IsValid)
         {
-            result.AddToModelState(ModelState);
+            validationResult.AddToModelState(ModelState);
             return BadRequest(ModelState);
         }
 
-        var patient = await _context.Patients
-                                    .Include(p => p.MedicalConditions)
-                                    .FirstOrDefaultAsync(p => p.Id == medicalConditionRequest.PatientId);
+        var medicalCondition = MedicalConditionMapper.ToMedicalCondition(medicalConditionRequest);
 
-        if (patient == null)
+        try
         {
-            return NotFound(new { Message = $"Patient with ID {medicalConditionRequest.PatientId} not found." });
+            await _medicalConditionService.CreateAsync(medicalCondition);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the medical condition.");
         }
 
-        var medicalCondition = MedicalConditionMapper.MapToMedicalCondition(medicalConditionRequest);
-        medicalCondition.Id = Guid.NewGuid();
-        medicalCondition.CreatedAt = DateTimeOffset.Now;
-        medicalCondition.ModifiedAt = DateTimeOffset.Now;
-
-        _context.MedicalConditions.Add(medicalCondition);
-        await _context.SaveChangesAsync();
-
-        var medicalConditionResponse = MedicalConditionMapper.MapToResponse(medicalCondition);
+        var medicalConditionResponse = MedicalConditionMapper.ToResponse(medicalCondition);
 
         return CreatedAtAction(nameof(GetMedicalCondition), new { id = medicalCondition.Id }, medicalConditionResponse);
     }
@@ -100,21 +96,22 @@ public class MedicalConditionsController : ControllerBase
     {
         if (medicalConditionRequest is null)
         {
-            return BadRequest(new { Message = "MedicalConditionRequest cannot be null" });
+            return BadRequest("MedicalConditionRequest cannot be null");
         }
 
-        ValidationResult result = await _validator.ValidateAsync(medicalConditionRequest);
-
-        if (!result.IsValid)
+        if (id == Guid.Empty)
         {
-            result.AddToModelState(ModelState);
+            return BadRequest("Invalid medical condition ID.");
+        }
+
+        ValidationResult validationResult = await _validator.ValidateAsync(medicalConditionRequest);
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState);
             return BadRequest(ModelState);
         }
 
-        var existingMedicalCondition = await _context.MedicalConditions
-                                                     .Include(mc => mc.Patient)
-                                                     .FirstOrDefaultAsync(mc => mc.Id == id);
-
+        var existingMedicalCondition = await _medicalConditionService.GetByIdAsync(id);
         if (existingMedicalCondition == null)
         {
             return NotFound(new { Message = $"Medical condition with ID {id} not found." });
@@ -122,11 +119,16 @@ public class MedicalConditionsController : ControllerBase
 
         MedicalConditionMapper.MapToExistingMedicalCondition(medicalConditionRequest, existingMedicalCondition);
 
-        existingMedicalCondition.ModifiedAt = DateTimeOffset.Now;
+        try
+        {
+            await _medicalConditionService.UpdateAsync(existingMedicalCondition);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the medical condition.");
+        }
 
-        await _context.SaveChangesAsync();
-
-        var medicalConditionResponse = MedicalConditionMapper.MapToResponse(existingMedicalCondition);
+        var medicalConditionResponse = MedicalConditionMapper.ToResponse(existingMedicalCondition);
 
         return Ok(medicalConditionResponse);
     }
@@ -134,15 +136,26 @@ public class MedicalConditionsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMedicalCondition(Guid id)
     {
-        var medicalCondition = await _context.MedicalConditions.FindAsync(id);
-        if (medicalCondition == null)
+        if (id == Guid.Empty)
         {
-            return NotFound(new { Message = $"Medical condition with ID {id} not found." });
+            return BadRequest("Invalid medical condition ID.");
         }
 
-        _context.MedicalConditions.Remove(medicalCondition);
-        await _context.SaveChangesAsync();
+        var existingMedicalCondition = await _medicalConditionService.GetByIdAsync(id);
+        if (existingMedicalCondition == null)
+        {
+            return NotFound();
+        }
 
-        return Ok(new { Message = "Medical condition deleted successfully." });
+        try
+        {
+            await _medicalConditionService.DeleteAsync(id);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the medical condition.");
+        }
+
+        return Ok("Medical condition deleted successfully.");
     }
 }

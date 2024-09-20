@@ -6,6 +6,8 @@ using AnnPrepareLavni.ApiService.Models;
 using AnnPrepareLavni.ApiService.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AnnPrepareLavni.Tests;
 
@@ -22,8 +24,17 @@ public class PatientsControllerTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
+        var serviceProvider = new ServiceCollection()
+                            .AddLogging()
+                            .BuildServiceProvider();
+
+        var factory = serviceProvider.GetService<ILoggerFactory>();
+
+        var logger = factory?.CreateLogger<PatientService>();
+
         _context = new ApplicationDbContext(options);
-        _controller = new PatientsController(new PatientRequestValidator(), _context);
+        var patientService = new PatientService(_context, logger!);
+        _controller = new PatientsController(new PatientRequestValidator(), patientService);
 
         SeedTestData();
     }

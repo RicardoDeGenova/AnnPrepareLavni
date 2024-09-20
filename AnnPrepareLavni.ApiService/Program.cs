@@ -1,7 +1,10 @@
 using AnnPrepareLavni.ApiService;
 using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.Address.Contracts;
+using AnnPrepareLavni.ApiService.Features.MedicalCondition;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
+using AnnPrepareLavni.ApiService.Features.Medication;
+using AnnPrepareLavni.ApiService.Features.Patient;
 using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +15,9 @@ builder.AddServiceDefaults();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase")));
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IMedicalConditionService, MedicalConditionService>();
+builder.Services.AddScoped<IMedicationService, MedicationService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

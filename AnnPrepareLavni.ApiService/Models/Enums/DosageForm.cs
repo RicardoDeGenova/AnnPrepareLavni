@@ -1,8 +1,8 @@
 ﻿namespace AnnPrepareLavni.ApiService.Models.Enums;
 
-public enum MedicationType
+public enum DosageForm
 {
-    Capsule,
+    Capsule = 1,
     Tablet,
     Liquid,
     Topical,

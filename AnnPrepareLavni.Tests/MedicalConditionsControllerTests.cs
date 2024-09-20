@@ -1,9 +1,12 @@
 using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
+using AnnPrepareLavni.ApiService.Features.Patient;
 using AnnPrepareLavni.ApiService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AnnPrepareLavni.Tests;
 
@@ -20,8 +23,16 @@ public class MedicalConditionsControllerTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
+        var serviceProvider = new ServiceCollection()
+                            .AddLogging()
+                            .BuildServiceProvider();
+
+        var factory = serviceProvider.GetService<ILoggerFactory>();
+
+        var logger = factory?.CreateLogger<MedicalConditionService>();
         _context = new ApplicationDbContext(options);
-        _controller = new MedicalConditionsController(new MedicalConditionRequestValidator(), _context);
+        var medicalConditionService = new MedicalConditionService(_context, logger!);
+        _controller = new MedicalConditionsController(new MedicalConditionRequestValidator(), medicalConditionService);
 
         SeedTestData();
     }
@@ -31,7 +42,7 @@ public class MedicalConditionsControllerTests
     {
         var patientId = _context.Patients.First().Id;
 
-        var request = await _controller.GetMedicalConditionsByPatient(patientId);
+        var request = await _controller.GetMedicalConditionsByPatientId(patientId);
         var result = request.Result as OkObjectResult;
         Assert.IsNotNull(result);
 

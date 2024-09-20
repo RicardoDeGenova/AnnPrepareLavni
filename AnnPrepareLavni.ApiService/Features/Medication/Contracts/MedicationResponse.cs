@@ -1,10 +1,10 @@
-﻿using AnnPrepareLavni.ApiService.Models.Enums;
+﻿using AnnPrepareLavni.ApiService.Models;
+using AnnPrepareLavni.ApiService.Models.Enums;
 
-namespace AnnPrepareLavni.ApiService.Models;
+namespace AnnPrepareLavni.ApiService.Features.Medication.Contracts;
 
-public class Medication
+public class MedicationResponse
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public DosageForm DosageForm { get; set; }
     public StrengthUnit StrengthUnit { get; set; }
