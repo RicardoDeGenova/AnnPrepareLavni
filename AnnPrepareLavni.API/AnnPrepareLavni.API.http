@@ -1,6 +1,0 @@
-@AnnPrepareLavni.API_HostAddress = http://localhost:5197
-
-GET {{AnnPrepareLavni.API_HostAddress}}/patients
-Accept: application/json
-
-###
