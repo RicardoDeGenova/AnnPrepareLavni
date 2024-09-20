@@ -81,7 +81,7 @@ public class MedicationsController : ControllerBase
         {
             await _medicationService.CreateAsync(medication);
         }
-        catch (Exception ex)
+        catch
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the medication.");
         }
@@ -123,7 +123,7 @@ public class MedicationsController : ControllerBase
         {
             await _medicationService.UpdateAsync(existingMedication);
         }
-        catch (Exception ex)
+        catch
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the medication.");
         }

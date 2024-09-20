@@ -1,7 +1,6 @@
 using AnnPrepareLavni.ApiService.Data;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
-using AnnPrepareLavni.ApiService.Features.Patient;
 using AnnPrepareLavni.ApiService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +12,8 @@ namespace AnnPrepareLavni.Tests;
 [TestClass]
 public class MedicalConditionsControllerTests
 {
-    private ApplicationDbContext _context;
-    private MedicalConditionsController _controller;
+    private ApplicationDbContext _context = null!;
+    private MedicalConditionsController _controller = null!;
 
     [TestInitialize]
     public void TestInitialize()

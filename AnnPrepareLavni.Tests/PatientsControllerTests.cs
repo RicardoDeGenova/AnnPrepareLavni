@@ -14,8 +14,8 @@ namespace AnnPrepareLavni.Tests;
 [TestClass]
 public class PatientsControllerTests
 {
-    private ApplicationDbContext _context;
-    private PatientsController _controller;
+    private ApplicationDbContext _context = null!;
+    private PatientsController _controller = null!;
 
     [TestInitialize]
     public void TestInitialize()
@@ -246,7 +246,7 @@ public class PatientsControllerTests
     [TestMethod]
     public async Task CreatePatient_ShouldReturnBadRequest_WhenPayloadIsEmpty()
     {
-        var result = await _controller.CreatePatient(null);
+        var result = await _controller.CreatePatient(null!);
         var badRequestResult = result.Result as BadRequestObjectResult;
 
         Assert.IsNotNull(badRequestResult);

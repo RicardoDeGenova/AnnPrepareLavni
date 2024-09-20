@@ -6,7 +6,7 @@ namespace AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
 public class MedicalConditionRequest
 {
     public Guid PatientId { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
 
     [DefaultValue(MedicalConditionType.Current)]

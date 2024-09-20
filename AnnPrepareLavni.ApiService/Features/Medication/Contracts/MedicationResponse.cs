@@ -1,4 +1,4 @@
-﻿using AnnPrepareLavni.ApiService.Models;
+﻿using AnnPrepareLavni.ApiService.Features.Prescription.Contracts;
 using AnnPrepareLavni.ApiService.Models.Enums;
 
 namespace AnnPrepareLavni.ApiService.Features.Medication.Contracts;
@@ -12,5 +12,5 @@ public class MedicationResponse
     public string Description { get; set; } = string.Empty;
     public string Manufacturer { get; set; } = string.Empty;
 
-    public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
+    public ICollection<PrescriptionResponse> Prescriptions { get; set; } = new List<PrescriptionResponse>();
 }

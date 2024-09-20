@@ -1,16 +1,13 @@
 ﻿using AnnPrepareLavni.ApiService.Models.Enums;
-using AnnPrepareLavni.ApiService.Utils.Extensions;
-using System.ComponentModel.DataAnnotations;
 using AnnPrepareLavni.ApiService.Features.Address.Contracts;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient.Contracts;
 
 public class PatientRequest
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; }
     public Gender Gender { get; set; }
     public float? HeightInMeters { get; set; }
