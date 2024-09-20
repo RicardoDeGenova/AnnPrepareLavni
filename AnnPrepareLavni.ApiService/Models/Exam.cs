@@ -3,8 +3,13 @@
 public class Exam 
 {
     public Guid Id { get; set; }
+
     public Guid PatientId { get; set; }
-    public Guid ProviderId { get; set; }
+    public Patient Patient { get; set; } = null!;
+
+    public Guid PrescriberId { get; set; }
+    public User Prescriber { get; set; } = null!;
+
     public string Pulmonary { get; set; } = string.Empty;
     public string Neurological { get; set; } = string.Empty;
     public string General { get; set; } = string.Empty;

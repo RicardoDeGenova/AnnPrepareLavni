@@ -11,6 +11,8 @@ using AnnPrepareLavni.ApiService.Features.Prescription;
 using AnnPrepareLavni.ApiService.Features.Prescription.Contracts;
 using AnnPrepareLavni.ApiService.Features.Triage;
 using AnnPrepareLavni.ApiService.Features.Triage.Contracts;
+using AnnPrepareLavni.ApiService.Features.User;
+using AnnPrepareLavni.ApiService.Features.User.Contracts;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,7 @@ builder.Services.AddScoped<IMedicalConditionService, MedicalConditionService>();
 builder.Services.AddScoped<IMedicationService, MedicationService>();
 builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
 builder.Services.AddScoped<ITriageService, TriageService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<PatientRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<AddressRequestValidator>();
@@ -32,6 +35,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<MedicalConditionRequestVali
 builder.Services.AddValidatorsFromAssemblyContaining<MedicationRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<PrescriptionRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<TriageRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserRequestValidator>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
