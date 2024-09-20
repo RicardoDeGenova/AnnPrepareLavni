@@ -4,8 +4,15 @@ using AnnPrepareLavni.ApiService.Features.Address.Contracts;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition;
 using AnnPrepareLavni.ApiService.Features.MedicalCondition.Contracts;
 using AnnPrepareLavni.ApiService.Features.Medication;
+using AnnPrepareLavni.ApiService.Features.Medication.Contracts;
 using AnnPrepareLavni.ApiService.Features.Patient;
 using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
+using AnnPrepareLavni.ApiService.Features.Prescription;
+using AnnPrepareLavni.ApiService.Features.Prescription.Contracts;
+using AnnPrepareLavni.ApiService.Features.Triage;
+using AnnPrepareLavni.ApiService.Features.Triage.Contracts;
+using AnnPrepareLavni.ApiService.Features.User;
+using AnnPrepareLavni.ApiService.Features.User.Contracts;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +25,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IMedicalConditionService, MedicalConditionService>();
 builder.Services.AddScoped<IMedicationService, MedicationService>();
+builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
+builder.Services.AddScoped<ITriageService, TriageService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<PatientRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<AddressRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<MedicalConditionRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<MedicationRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<PrescriptionRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<TriageRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserRequestValidator>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -29,10 +47,6 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod()
                .AllowAnyHeader());
 });
-
-builder.Services.AddValidatorsFromAssemblyContaining<PatientRequestValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<AddressRequestValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<MedicalConditionRequestValidator>();
 
 var app = builder.Build();
 app.UseMiddleware<GlobalRoutePrefixMiddleware>("/api/v1"); 
