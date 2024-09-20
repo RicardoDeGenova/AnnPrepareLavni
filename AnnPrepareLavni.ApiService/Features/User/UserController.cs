@@ -3,6 +3,7 @@ using AnnPrepareLavni.ApiService.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnnPrepareLavni.ApiService.Features.User;
@@ -81,7 +82,7 @@ public class UsersController : ControllerBase
                 return BadRequest("Unable to create user.");
             }
         }
-        catch (Exception ex)
+        catch
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the user.");
         }
@@ -127,7 +128,7 @@ public class UsersController : ControllerBase
                 return BadRequest("Unable to update user.");
             }
         }
-        catch (Exception ex)
+        catch
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the user.");
         }
@@ -163,24 +164,6 @@ public class UsersController : ControllerBase
         return Ok("User deleted successfully.");
     }
 
-    [HttpPost("authenticate")]
-    public async Task<ActionResult<UserResponse>> Authenticate([FromBody] UserLoginRequest loginRequest)
-    {
-        if (loginRequest is null)
-        {
-            return BadRequest("LoginRequest cannot be null");
-        }
-
-        var user = await _userService.AuthenticateAsync(loginRequest.Username, loginRequest.Password);
-        if (user == null)
-        {
-            return Unauthorized("Invalid username or password.");
-        }
-
-        var userResponse = UserMapper.ToResponse(user);
-        return Ok(userResponse);
-    }
-
     [HttpPost("{id}/changePassword")]
     public async Task<IActionResult> ChangePassword(Guid id, [FromBody] ChangePasswordRequest changePasswordRequest)
     {
@@ -197,7 +180,7 @@ public class UsersController : ControllerBase
                 return BadRequest("Unable to change password.");
             }
         }
-        catch (Exception ex)
+        catch
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while changing the password.");
         }

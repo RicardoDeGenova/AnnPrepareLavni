@@ -9,6 +9,7 @@ public class GlobalRoutePrefixMiddleware
         _next = next;
         _routePrefix = routePrefix;
     }
+
     public async Task InvokeAsync(HttpContext context)
     {
         context.Request.PathBase = new PathString(_routePrefix);

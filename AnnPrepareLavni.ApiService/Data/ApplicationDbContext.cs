@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Appointment> Appointments { get; set; }
     public DbSet<Visit> Visits { get; set; } 
     public DbSet<Department> Departments { get; set; } 
+    public DbSet<RefreshToken> RefreshTokens { get; set; } 
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

@@ -1,12 +1,16 @@
 ﻿using AnnPrepareLavni.ApiService.Features.Address.Contracts;
 using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
+using AnnPrepareLavni.ApiService.Models;
+using AnnPrepareLavni.ApiService.Models.Enums;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnnPrepareLavni.ApiService.Features.Patient;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class PatientsController : ControllerBase

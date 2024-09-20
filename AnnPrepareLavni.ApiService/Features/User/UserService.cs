@@ -4,6 +4,7 @@ using AnnPrepareLavni.ApiService.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
 
 namespace AnnPrepareLavni.ApiService.Features.User;
 
@@ -12,17 +13,20 @@ public interface IUserService : IGenericService<Models.User>
     Task<Models.User?> AuthenticateAsync(string username, string password);
     Task<bool> ChangePasswordAsync(Guid userId, string newPassword);
     Task<IEnumerable<Models.User>> GetUsersByRoleAsync(UserRole role);
+    Task<Models.User?> GetByUsernameAsync(string userName);
 }
 
 public class UserService : IUserService
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<UserService> _logger;
+    private readonly PasswordHasher<Models.User> _passwordHasher;
 
     public UserService(ApplicationDbContext context, ILogger<UserService> logger)
     {
         _context = context;
         _logger = logger;
+        _passwordHasher = new PasswordHasher<Models.User>();
     }
 
     public async Task<Models.User?> GetByIdAsync(Guid id)
@@ -44,6 +48,29 @@ public class UserService : IUserService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving user with ID {UserId}", id);
+            throw;
+        }
+    }
+
+    public async Task<Models.User?> GetByUsernameAsync(string userName)
+    {
+        if (string.IsNullOrEmpty(userName))
+        {
+            _logger.LogWarning($"{nameof(GetByIdAsync)} called with empty userName.");
+            return null;
+        }
+
+        try
+        {
+            return await _context.Users
+                .Include(u => u.Prescriptions)
+                .Include(u => u.Triages)
+                .Include(u => u.Appointments)
+                .FirstOrDefaultAsync(u => u.Username == userName);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving user with Username {userName}", userName);
             throw;
         }
     }
@@ -75,11 +102,14 @@ public class UserService : IUserService
 
         try
         {
-            user.PasswordHash = HashPassword(user.PasswordHash);
-
             user.Id = Guid.NewGuid();
             user.CreatedAt = DateTimeOffset.UtcNow;
             user.ModifiedAt = DateTimeOffset.UtcNow;
+
+            var password = user.PasswordHash;
+            user.PasswordHash = string.Empty;
+
+            user.PasswordHash = _passwordHasher.HashPassword(user, password);
 
             await _context.Users.AddAsync(user);
             var created = await _context.SaveChangesAsync();
@@ -167,15 +197,18 @@ public class UserService : IUserService
     {
         try
         {
-            var passwordHash = HashPassword(password);
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == passwordHash);
-
-            if (user == null)
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+            if (user is not null)
             {
-                _logger.LogWarning("Authentication failed for username {Username}.", username);
+                var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+                if (result == PasswordVerificationResult.Success)
+                {
+                    return user;
+                }
             }
 
-            return user;
+            _logger.LogWarning("Authentication failed for username {Username}.", username);
+            return null;
         }
         catch (Exception ex)
         {
@@ -201,7 +234,7 @@ public class UserService : IUserService
                 return false;
             }
 
-            user.PasswordHash = HashPassword(newPassword);
+            user.PasswordHash = _passwordHasher.HashPassword(user, user.PasswordHash);
             user.ModifiedAt = DateTimeOffset.UtcNow;
 
             _context.Users.Update(user);
@@ -231,13 +264,5 @@ public class UserService : IUserService
             _logger.LogError(ex, "Error retrieving users with role {Role}.", role);
             throw;
         }
-    }
-
-    private string HashPassword(string password)
-    {
-        using var sha256 = SHA256.Create();
-        var bytes = Encoding.UTF8.GetBytes(password);
-        var hash = sha256.ComputeHash(bytes);
-        return Convert.ToBase64String(hash);
     }
 }
