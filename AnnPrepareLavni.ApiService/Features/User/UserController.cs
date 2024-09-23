@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AnnPrepareLavni.ApiService.Features.User;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class UsersController : ControllerBase

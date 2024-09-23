@@ -1,9 +1,6 @@
 ﻿using AnnPrepareLavni.ApiService.Data;
-using AnnPrepareLavni.ApiService.Infrastructure;
 using AnnPrepareLavni.ApiService.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
 
 namespace AnnPrepareLavni.ApiService.Features.User;

@@ -2,10 +2,12 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnnPrepareLavni.ApiService.Features.MedicalCondition;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class MedicalConditionsController : ControllerBase

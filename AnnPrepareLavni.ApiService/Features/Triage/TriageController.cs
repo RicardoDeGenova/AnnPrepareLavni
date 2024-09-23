@@ -1,12 +1,13 @@
 ﻿using AnnPrepareLavni.ApiService.Features.Triage.Contracts;
-using AnnPrepareLavni.ApiService.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnnPrepareLavni.ApiService.Features.Triage;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class TriagesController : ControllerBase

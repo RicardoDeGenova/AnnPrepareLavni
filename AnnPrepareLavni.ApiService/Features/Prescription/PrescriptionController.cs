@@ -2,10 +2,12 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnnPrepareLavni.ApiService.Features.Prescription;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class PrescriptionsController : ControllerBase
