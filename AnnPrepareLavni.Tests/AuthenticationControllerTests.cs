@@ -335,86 +335,41 @@ public class AuthenticationControllerTests
         var savedTokens = await _context.RefreshTokens.Where(rt => rt.UserId == user!.Id).ToListAsync();
         Assert.AreEqual(0, savedTokens.Count, "All refresh tokens should be removed from the database.");
     }
+
     [TestMethod]
     public async Task Login_FromComputerAndPhone_ShouldStoreSeparateRefreshTokens()
     {
-        // Arrange
-        var computerUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36";
-        var phoneUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1";
-
-        // Act
-        // Login from Computer
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                Request =
-                    {
-                        Headers =
-                        {
-                            { "User-Agent", computerUserAgent }
-                        }
-                    }
-            }
-        };
-        var loginRequestComputer = new AuthenticationRequest
-        {
-            Username = "testuser",
-            Password = "password"
-        };
-        var loginResultComputer = await _controller.Login(loginRequestComputer);
-        var okLoginComputer = loginResultComputer as OkObjectResult;
-        Assert.IsNotNull(okLoginComputer, "Expected OkObjectResult from computer login.");
-        var authResponseComputer = okLoginComputer?.Value as AuthenticationResponse;
+        var authResponseComputer = await Login_FromComputer();
         Assert.IsNotNull(authResponseComputer, "AuthenticationResponse from computer login should not be null.");
 
-        // Login from Phone
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext
-            {
-                Request =
-                    {
-                        Headers =
-                        {
-                            { "User-Agent", phoneUserAgent }
-                        }
-                    }
-            }
-        };
-        var loginRequestPhone = new AuthenticationRequest
-        {
-            Username = "testuser",
-            Password = "password"
-        };
-        var loginResultPhone = await _controller.Login(loginRequestPhone);
-        var okLoginPhone = loginResultPhone as OkObjectResult;
-        Assert.IsNotNull(okLoginPhone, "Expected OkObjectResult from phone login.");
-        var authResponsePhone = okLoginPhone?.Value as AuthenticationResponse;
+        var accessTokenComputer = authResponseComputer.AccessToken;
+        var refreshTokenComputer = authResponseComputer.RefreshToken;
+
+        var authResponsePhone = await Login_FromPhone();
         Assert.IsNotNull(authResponsePhone, "AuthenticationResponse from phone login should not be null.");
 
-        // Assert
-        // Verify that two separate refresh tokens are stored for the user with different device info
+        var accessTokenPhone = authResponsePhone.AccessToken;
+        var refreshTokenPhone = authResponsePhone.RefreshToken;
+
+        Assert.IsNotNull(authResponsePhone, "AuthenticationResponse from phone login should not be null.");
+
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == "testuser");
         Assert.IsNotNull(user, "Test user should exist.");
 
         var hashedRefreshTokenComputer = _authenticationService.HashToken(authResponseComputer.RefreshToken);
-        var savedTokenComputer = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.UserId == user.Id && rt.Token == hashedRefreshTokenComputer && rt.DeviceInfo == computerUserAgent);
+        var savedTokenComputer = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.UserId == user.Id && rt.Token == hashedRefreshTokenComputer && rt.DeviceInfo == ComputerUserAgent);
         Assert.IsNotNull(savedTokenComputer, "Refresh token for computer should be saved in the database.");
 
         var hashedRefreshTokenPhone = _authenticationService.HashToken(authResponsePhone.RefreshToken);
-        var savedTokenPhone = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.UserId == user.Id && rt.Token == hashedRefreshTokenPhone && rt.DeviceInfo == phoneUserAgent);
+        var savedTokenPhone = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.UserId == user.Id && rt.Token == hashedRefreshTokenPhone && rt.DeviceInfo == PhoneUserAgent);
         Assert.IsNotNull(savedTokenPhone, "Refresh token for phone should be saved in the database.");
 
-        // Ensure that tokens are distinct
         Assert.AreNotEqual(authResponseComputer.RefreshToken, authResponsePhone.RefreshToken, "Refresh tokens for different devices should be distinct.");
     }
 
     [TestMethod]
     public async Task Refresh_WithExpiredRefreshToken_ShouldReturnUnauthorized()
     {
-        // Arrange
-        // Perform a successful login to obtain tokens
         var loginRequest = new AuthenticationRequest
         {
             Username = "testuser",
@@ -430,7 +385,6 @@ public class AuthenticationControllerTests
         var accessToken = authResponse!.AccessToken;
         var refreshToken = authResponse.RefreshToken;
 
-        // Simulate token expiration by setting ExpiryDateUtc to a past date
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == "testuser");
         Assert.IsNotNull(user, "Test user should exist.");
 
@@ -442,17 +396,14 @@ public class AuthenticationControllerTests
         _context.RefreshTokens.Update(savedToken);
         await _context.SaveChangesAsync();
 
-        // Create a refresh request with the expired refresh token
         var refreshRequest = new RefreshTokenRequest
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken
         };
 
-        // Act
         var refreshResult = await _controller.Refresh(refreshRequest);
 
-        // Assert
         var unauthorizedResult = refreshResult as UnauthorizedObjectResult;
         Assert.IsNotNull(unauthorizedResult, "Expected UnauthorizedObjectResult.");
         Assert.AreEqual(401, unauthorizedResult.StatusCode, "Expected status code 401.");
@@ -461,7 +412,6 @@ public class AuthenticationControllerTests
         Assert.IsNotNull(response, "Response should not be null.");
         Assert.AreEqual("Invalid or expired refresh token", response.Message, "Unexpected error message.");
 
-        // Verify that the expired refresh token is not replaced or stored again
         var expiredToken = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.UserId == user.Id && rt.Token == hashedRefreshToken);
         Assert.IsNull(expiredToken, "Expired refresh token should be removed when invalidated.");
     }
