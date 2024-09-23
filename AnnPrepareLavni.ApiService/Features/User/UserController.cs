@@ -26,22 +26,22 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers(bool includePrescriptions = false, bool includeTriages = false, bool includeAppointments = false)
     {
-        var users = await _userService.GetAllAsync();
+        var users = await _userService.GetAllAsync(includePrescriptions, includeTriages, includeAppointments);
         var userResponseList = users.Select(UserMapper.ToResponse);
         return Ok(userResponseList);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserResponse>> GetUser(Guid id)
+    public async Task<ActionResult<UserResponse>> GetUser(Guid id, bool includePrescriptions = false, bool includeTriages = false, bool includeAppointments = false)
     {
         if (id == Guid.Empty)
         {
             return BadRequest(new ReturnMessage("Invalid user ID."));
         }
 
-        var user = await _userService.GetByIdAsync(id);
+        var user = await _userService.GetByIdAsync(id, includePrescriptions, includeTriages, includeAppointments);
         if (user == null)
         {
             return NotFound();

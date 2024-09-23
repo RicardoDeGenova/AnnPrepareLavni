@@ -1,12 +1,9 @@
-﻿using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
-using AnnPrepareLavni.ApiService.Features.User.Contracts;
-
-namespace AnnPrepareLavni.ApiService.Features.Triage.Contracts;
+﻿namespace AnnPrepareLavni.ApiService.Features.Triage.Contracts;
 
 public class TriageResponse
 {
-    public PatientResponse Patient { get; set; } = null!;
-    public UserResponse Nurse { get; set; } = null!;
+    public Guid PatientId { get; set; }
+    public Guid NurseId { get; set; }
 
     public string Complaint { get; set; } = string.Empty;
     public double TemperatureInCelsius { get; set; }

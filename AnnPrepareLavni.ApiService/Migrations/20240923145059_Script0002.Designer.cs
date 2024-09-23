@@ -3,6 +3,7 @@ using System;
 using AnnPrepareLavni.ApiService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnnPrepareLavni.ApiService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240923145059_Script0002")]
+    partial class Script0002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -61,7 +64,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
                     b.HasIndex("PatientId")
                         .IsUnique();
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.Appointment", b =>
@@ -98,7 +101,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.Department", b =>
@@ -117,7 +120,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.MedicalCondition", b =>
@@ -156,7 +159,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("MedicalConditions", (string)null);
+                    b.ToTable("MedicalConditions");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.Medication", b =>
@@ -188,7 +191,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Medications", (string)null);
+                    b.ToTable("Medications");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.Patient", b =>
@@ -250,7 +253,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patients", (string)null);
+                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.Prescription", b =>
@@ -304,7 +307,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasIndex("VisitId");
 
-                    b.ToTable("Prescriptions", (string)null);
+                    b.ToTable("Prescriptions");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.RefreshToken", b =>
@@ -332,7 +335,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.Triage", b =>
@@ -386,7 +389,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasIndex("VisitId");
 
-                    b.ToTable("Triages", (string)null);
+                    b.ToTable("Triages");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.User", b =>
@@ -434,7 +437,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.Visit", b =>
@@ -471,7 +474,7 @@ namespace AnnPrepareLavni.ApiService.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Visits", (string)null);
+                    b.ToTable("Visits");
                 });
 
             modelBuilder.Entity("AnnPrepareLavni.ApiService.Models.Address", b =>

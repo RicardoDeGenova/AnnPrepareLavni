@@ -12,5 +12,5 @@ public class MedicationResponse
     public string Description { get; set; } = string.Empty;
     public string Manufacturer { get; set; } = string.Empty;
 
-    public ICollection<PrescriptionResponse> Prescriptions { get; set; } = new List<PrescriptionResponse>();
+    public ICollection<PrescriptionResponse> Prescriptions { get; set; } = [];
 }

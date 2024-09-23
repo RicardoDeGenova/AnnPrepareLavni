@@ -25,9 +25,9 @@ public class User
     public Language Language { get; set; }
     public UserRole Role { get; set; }
 
-    public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
-    public ICollection<Triage> Triages { get; set; } = new List<Triage>();
-    public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+    public ICollection<Prescription> Prescriptions { get; set; } = [];
+    public ICollection<Triage> Triages { get; set; } = [];
+    public ICollection<Appointment> Appointments { get; set; } = [];
 
 
 

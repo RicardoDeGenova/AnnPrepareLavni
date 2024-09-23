@@ -8,7 +8,7 @@ namespace AnnPrepareLavni.ApiService.Features.User;
 public interface IUserService
 {
     public Task<Models.User?> GetByIdAsync(Guid id, bool includePrescriptions = false, bool includeTriages = false, bool includeAppointments = false);
-    public Task<IEnumerable<Models.User>> GetAllAsync();
+    public Task<IEnumerable<Models.User>> GetAllAsync(bool includePrescriptions = false, bool includeTriages = false, bool includeAppointments = false);
     public Task<bool> CreateAsync(Models.User entity);
     public Task<bool> UpdateAsync(Models.User entity);
     public Task<bool> DeleteAsync(Guid id);
@@ -80,15 +80,22 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<IEnumerable<Models.User>> GetAllAsync()
+    public async Task<IEnumerable<Models.User>> GetAllAsync(bool includePrescriptions = false, bool includeTriages = false, bool includeAppointments = false)
     {
         try
         {
-            return await _context.Users
-                .Include(u => u.Prescriptions)
-                .Include(u => u.Triages)
-                .Include(u => u.Appointments)
-                .ToListAsync();
+            var query = _context.Users.AsQueryable();
+
+            if (includePrescriptions)
+                query = query.Include(u => u.Prescriptions);
+
+            if (includeTriages)
+                query = query.Include(u => u.Triages);
+
+            if (includeAppointments)
+                query = query.Include(u => u.Appointments);
+            
+            return await query.ToListAsync();
         }
         catch (Exception ex)
         {

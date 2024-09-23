@@ -1,12 +1,9 @@
-﻿using AnnPrepareLavni.ApiService.Features.Patient.Contracts;
-using AnnPrepareLavni.ApiService.Features.User.Contracts;
-
-namespace AnnPrepareLavni.ApiService.Features.Prescription.Contracts;
+﻿namespace AnnPrepareLavni.ApiService.Features.Prescription.Contracts;
 
 public class PrescriptionResponse
 {
-    public PatientResponse Patient { get; set; } = null!;
-    public UserResponse Prescriber { get; set; } = null!;
+    public Guid PatientId { get; set; }
+    public Guid PrescriberId { get; set; }
     public DateTime DatePrescribed { get; set; }
     public string DosageInstructions { get; set; } = string.Empty;
     public int Quantity { get; set; }
