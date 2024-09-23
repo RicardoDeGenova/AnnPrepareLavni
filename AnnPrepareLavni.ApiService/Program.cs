@@ -14,6 +14,7 @@ using AnnPrepareLavni.ApiService.Features.Triage;
 using AnnPrepareLavni.ApiService.Features.Triage.Contracts;
 using AnnPrepareLavni.ApiService.Features.User;
 using AnnPrepareLavni.ApiService.Features.User.Contracts;
+using AnnPrepareLavni.ApiService.Infrastructure;
 using AnnPrepareLavni.ApiService.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,7 +30,6 @@ builder.AddServiceDefaults();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase"))); 
 
-builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddScoped<IPatientService, PatientService>();
@@ -38,6 +38,7 @@ builder.Services.AddScoped<IMedicationService, MedicationService>();
 builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
 builder.Services.AddScoped<ITriageService, TriageService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<PatientRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<AddressRequestValidator>();
@@ -86,7 +87,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtSettings:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key),
-        ClockSkew = TimeSpan.Zero
+        ClockSkew = TimeSpan.FromSeconds(5)
     };
 });
 

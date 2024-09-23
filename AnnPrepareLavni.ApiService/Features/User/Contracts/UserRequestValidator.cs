@@ -27,6 +27,10 @@ public class UserRequestValidator : AbstractValidator<UserRequest>
             .NotEmpty().WithMessage("Last name is required.")
             .Length(1, 100).WithMessage("Last name must be between 1 and 100 characters.");
 
+        RuleFor(u => u.Email)
+            .NotEmpty().WithMessage("Email is required.")
+            .EmailAddress().WithMessage("Email is invalid.");
+
         RuleFor(u => u.Role)
             .IsInEnum().WithMessage("Role must be a valid UserRole.");
     }

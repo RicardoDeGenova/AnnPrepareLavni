@@ -8,8 +8,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AnnPrepareLavni.ApiService.Features.User;
 
-public interface IUserService : IGenericService<Models.User>
+public interface IUserService
 {
+    public Task<Models.User?> GetByIdAsync(Guid id, bool includePrescriptions = false, bool includeTriages = false, bool includeAppointments = false);
+    public Task<IEnumerable<Models.User>> GetAllAsync();
+    public Task<bool> CreateAsync(Models.User entity);
+    public Task<bool> UpdateAsync(Models.User entity);
+    public Task<bool> DeleteAsync(Guid id);
     Task<Models.User?> AuthenticateAsync(string username, string password);
     Task<bool> ChangePasswordAsync(Guid userId, string newPassword);
     Task<IEnumerable<Models.User>> GetUsersByRoleAsync(UserRole role);
@@ -29,7 +34,7 @@ public class UserService : IUserService
         _passwordHasher = new PasswordHasher<Models.User>();
     }
 
-    public async Task<Models.User?> GetByIdAsync(Guid id)
+    public async Task<Models.User?> GetByIdAsync(Guid id, bool includePrescriptions = false, bool includeTriages = false, bool includeAppointments = false)
     {
         if (id == Guid.Empty)
         {
@@ -39,11 +44,18 @@ public class UserService : IUserService
 
         try
         {
-            return await _context.Users
-                .Include(u => u.Prescriptions)
-                .Include(u => u.Triages)
-                .Include(u => u.Appointments)
-                .FirstOrDefaultAsync(u => u.Id == id);
+            var query = _context.Users.AsQueryable();
+
+            if (includePrescriptions)
+                query = query.Include(u => u.Prescriptions);
+
+            if (includeTriages)
+                query = query.Include(u => u.Triages);
+
+            if (includeAppointments)
+                query = query.Include(u => u.Appointments);
+
+            return await query.FirstOrDefaultAsync(u => u.Id == id);
         }
         catch (Exception ex)
         {
@@ -62,11 +74,7 @@ public class UserService : IUserService
 
         try
         {
-            return await _context.Users
-                .Include(u => u.Prescriptions)
-                .Include(u => u.Triages)
-                .Include(u => u.Appointments)
-                .FirstOrDefaultAsync(u => u.Username == userName);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Username == userName);
         }
         catch (Exception ex)
         {

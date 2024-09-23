@@ -1,5 +1,6 @@
 ﻿using AnnPrepareLavni.ApiService.Features.User.Contracts;
 using AnnPrepareLavni.ApiService.Models;
+using AnnPrepareLavni.ApiService.Utils;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
@@ -36,7 +37,7 @@ public class UsersController : ControllerBase
     {
         if (id == Guid.Empty)
         {
-            return BadRequest("Invalid user ID.");
+            return BadRequest(new ReturnMessage("Invalid user ID."));
         }
 
         var user = await _userService.GetByIdAsync(id);
@@ -79,12 +80,12 @@ public class UsersController : ControllerBase
             var result = await _userService.CreateAsync(user);
             if (!result)
             {
-                return BadRequest("Unable to create user.");
+                return BadRequest(new ReturnMessage("Unable to create user."));
             }
         }
         catch
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the user.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new ReturnMessage("An error occurred while creating the user."));
         }
 
         var userResponse = UserMapper.ToResponse(user);
@@ -97,12 +98,12 @@ public class UsersController : ControllerBase
     {
         if (userRequest is null)
         {
-            return BadRequest("UserRequest cannot be null");
+            return BadRequest(new ReturnMessage("UserRequest cannot be null"));
         }
 
         if (id == Guid.Empty)
         {
-            return BadRequest("Invalid user ID.");
+            return BadRequest(new ReturnMessage("Invalid user ID."));
         }
 
         ValidationResult validationResult = await _validator.ValidateAsync(userRequest);
@@ -125,12 +126,12 @@ public class UsersController : ControllerBase
             var result = await _userService.UpdateAsync(existingUser);
             if (!result)
             {
-                return BadRequest("Unable to update user.");
+                return BadRequest(new ReturnMessage("Unable to update user."));
             }
         }
         catch
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the user.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new ReturnMessage("An error occurred while updating the user."));
         }
 
         var userResponse = UserMapper.ToResponse(existingUser);
@@ -143,7 +144,7 @@ public class UsersController : ControllerBase
     {
         if (id == Guid.Empty)
         {
-            return BadRequest("Invalid user ID.");
+            return BadRequest(new ReturnMessage("Invalid user ID."));
         }
 
         var existingUser = await _userService.GetByIdAsync(id);
@@ -158,10 +159,10 @@ public class UsersController : ControllerBase
         }
         catch
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the user.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new ReturnMessage("An error occurred while deleting the user."));
         }
 
-        return Ok("User deleted successfully.");
+        return Ok(new ReturnMessage("User deleted successfully."));
     }
 
     [HttpPost("{id}/changePassword")]
@@ -169,7 +170,7 @@ public class UsersController : ControllerBase
     {
         if (changePasswordRequest is null || id == Guid.Empty)
         {
-            return BadRequest("Invalid request.");
+            return BadRequest(new ReturnMessage("Invalid request."));
         }
 
         try
@@ -177,14 +178,14 @@ public class UsersController : ControllerBase
             var result = await _userService.ChangePasswordAsync(id, changePasswordRequest.NewPassword);
             if (!result)
             {
-                return BadRequest("Unable to change password.");
+                return BadRequest(new ReturnMessage("Unable to change password."));
             }
         }
         catch
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while changing the password.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new ReturnMessage("An error occurred while changing the password."));
         }
 
-        return Ok("Password changed successfully.");
+        return Ok(new ReturnMessage("Password changed successfully."));
     }
 }
