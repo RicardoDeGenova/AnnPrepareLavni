@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /AnnPrepareLavni.ApiService/LocalDatabase.db
 /AnnPrepareLavni.ApiService/appsettings.json
+/AnnPrepareLavni.FrontEnd/dist
