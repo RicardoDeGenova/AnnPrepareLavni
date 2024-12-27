@@ -15,11 +15,9 @@ using AnnPrepareLavni.ApiService.Features.Triage.Contracts;
 using AnnPrepareLavni.ApiService.Features.User;
 using AnnPrepareLavni.ApiService.Features.User.Contracts;
 using AnnPrepareLavni.ApiService.Infrastructure;
-using AnnPrepareLavni.ApiService.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 

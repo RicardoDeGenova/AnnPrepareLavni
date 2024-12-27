@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AnnPrepareLavni.ApiService\AnnPrepareLavni.ApiService.csproj" />
+    <ProjectReference Include="..\AnnPrepareLavni.FrontEnd\AnnPrepareLavni.FrontEnd.csproj" />
   </ItemGroup>
 
 </Project>

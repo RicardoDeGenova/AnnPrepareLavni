@@ -1,0 +1,73 @@
+﻿@page "/login"
+@using AnnPrepareLavni.FrontEnd.Authentication
+@using AnnPrepareLavni.FrontEnd.Models
+@using AnnPrepareLavni.FrontEnd.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@rendermode InteractiveServer
+@inject ILoginService LoginService
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+
+<PageTitle>Login</PageTitle>
+
+<div class="login-container">
+    <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <InputText id="username" class="form-control" @bind-Value="loginModel.Username" />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="loginModel.Password" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger">@errorMessage</div>
+        }
+
+        <button type="submit" class="btn btn-primary">Login</button>
+        <button class="btn btn-link" @onclick="NavigateToForgotPassword">Forgot Password?</button>
+    </EditForm>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+    private string? errorMessage;
+
+    private async Task HandleLogin()
+    {
+        errorMessage = null;
+        try
+        {
+            var result = await LoginService.LoginAsync(loginModel);
+            if (result.IsSuccess)
+            {
+                ArgumentNullException.ThrowIfNull(result.Token);
+
+                // Set authentication state
+                await ((CustomAuthenticationStateProvider)AuthStateProvider).MarkUserAsAuthenticated(result.Token);
+
+                // Redirect to the main page
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = result.ErrorMessage;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An unexpected error occurred: {ex.Message}";
+        }
+    }
+
+    private void NavigateToForgotPassword()
+    {
+        Navigation.NavigateTo("/forgot-password");
+    }
+}

@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /AnnPrepareLavni.ApiService/LocalDatabase.db
 /AnnPrepareLavni.ApiService/appsettings.json
 /AnnPrepareLavni.FrontEnd/dist
+/AnnPrepareLavni.FrontEnd/node_modules
+AnnPrepareLavni.FrontEnd/.env
